@@ -12,17 +12,21 @@ namespace Logic
         where T : class, IDomainObject, new()
     {
         public DbSet<T> Items { get; set; }
-        public DataContext() : base(
-            //"Provider=Microsoft.ACE.OLEDB.12.0;" +
-            "Data Source=db.accdb;"
-            //"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:" +
-            //"\\Users\\codyg\\source\\repos\\Лаба с Ефимом 3\\DataAccessLayer\\Database1.mdf;Integrated Security=True"
-        ) { }
+        public DataContext() : base("name=DataContext") { }
+        public void FixEfProviderServicesProblem()
+        {
+            //The Entity Framework provider type 'System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer'
+            //for the 'System.Data.SqlClient' ADO.NET provider could not be loaded. 
+            //Make sure the provider assembly is available to the running application. 
+            //See http://go.microsoft.com/fwlink/?LinkId=260882 for more information.
+
+            var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
+        }
     }
     public class Repository<T> : IRepository<T>
         where T : class, IDomainObject, new()
     {
-        DataContext<T> _context;
+        readonly DataContext<T> _context;
 
         public Repository()
         {

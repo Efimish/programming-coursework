@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{58E55AA8-4038-4ECD-8DE2-4461D5595BFA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Kursovaya</RootNamespace>
-    <AssemblyName>Kursovaya</AssemblyName>
+    <RootNamespace>ViewWinForms</RootNamespace>
+    <AssemblyName>ViewWinForms</AssemblyName>
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -182,6 +182,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
