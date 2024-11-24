@@ -9,10 +9,10 @@ namespace Logic
     public class Skis : IDomainObject
     {
         public int ID { get; set; }
-        string Model;
-        int Size;
-        string Condition;
-        int PricePerHour;
-        string Status;
+        public string Model;
+        public int Size;
+        public string Condition;
+        public int PricePerHour;
+        public string Status;
     }
 }

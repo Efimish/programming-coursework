@@ -10,8 +10,8 @@ namespace Logic
         where T : class, IDomainObject, new()
     {
         void Add(T item);
-        T GetByID(int id);
+        T Get(int id);
         IEnumerable<T> GetAll();
-        void Delete(T item);
+        void Delete(int id);
     }
 }

@@ -9,10 +9,10 @@ namespace Logic
     public class Employee : IDomainObject
     {
         public int ID { get; set; }
-        string FIO;
-        string Job;
-        DateTime EmploymentDate;
-        string Phone;
-        string PasswordHash;
+        public string FIO;
+        public string Job;
+        public DateTime EmploymentDate;
+        public string Phone;
+        public string PasswordHash;
     }
 }

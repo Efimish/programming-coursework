@@ -14,5 +14,6 @@ namespace Logic
         public string Email;
         public DateTime RegistrationDate;
         public int BonusPoints;
+        public string PasswordHash;
     }
 }

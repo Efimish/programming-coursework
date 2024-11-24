@@ -9,11 +9,11 @@ namespace Logic
     public class Rent : IDomainObject
     {
         public int ID { get; set; }
-        int ClientID;
-        int SkisID;
-        int EmployeeID;
-        DateTime StartTime;
-        DateTime EndTime;
-        int Price;
+        public int ClientID;
+        public int SkisID;
+        public int EmployeeID;
+        public DateTime StartTime;
+        public DateTime EndTime;
+        public int Price;
     }
 }
