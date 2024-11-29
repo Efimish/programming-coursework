@@ -53,12 +53,13 @@ namespace ViewConsole
                                 Console.WriteLine(
                                     "{" +
                                     "\n  ID = " + client.ID +
+                                    "\n  Login = " + client.Login +
+                                    "\n  PasswordHash = " + client.PasswordHash +
                                     "\n  FIO = " + client.FIO +
                                     "\n  Phone = " + client.Phone +
                                     "\n  Email = " + client.Email +
                                     "\n  RegistrationDate = " + client.RegistrationDate +
                                     "\n  BonusPoints = " + client.BonusPoints +
-                                    "\n  PasswordHash = " + client.PasswordHash +
                                     "\n}"
                                 );
                             }
@@ -100,11 +101,13 @@ namespace ViewConsole
                                 Console.WriteLine(
                                     "{" +
                                     "\n  ID = " + employee.ID +
-                                    "\n  FIO = " + employee.FIO +
-                                    "\n  Job = " + employee.Job +
-                                    "\n  EmploymentDate = " + employee.EmploymentDate +
-                                    "\n  Phone = " + employee.Phone +
+                                    "\n  Login = " + employee.Login +
                                     "\n  PasswordHash = " + employee.PasswordHash +
+                                    "\n  FIO = " + employee.FIO +
+                                    "\n  Phone = " + employee.Phone +
+                                    "\n  Email = " + employee.Email +
+                                    "\n  RegistrationDate = " + employee.RegistrationDate +
+                                    "\n  Job = " + employee.Job +
                                     "\n}"
                                 );
                             }

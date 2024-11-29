@@ -21,7 +21,7 @@ namespace Logic
         }
         public void Add(Rent rent)
         {
-            string query = "INSERT INTP Аренда" +
+            string query = "INSERT INTO Аренда" +
                 "(ID_Клиента, ID_Лыж, ID_Сотрудника, Время_начала, Время_окончания, Стоимость)" +
                 "VALUES @client_id, @skis_id, @employee_id, @start_time, @end_time, @price;";
             OleDbCommand command = new OleDbCommand(query, mc);
@@ -37,7 +37,7 @@ namespace Logic
         }
         public Rent Get(int id)
         {
-            string query = "SELECT * FROM Аренда WHERE ID_Аренды = @id;";
+            string query = "SELECT * FROM Аренда WHERE ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 
@@ -49,7 +49,7 @@ namespace Logic
                 {
                     rent = new Rent
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Аренды")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         EmployeeID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
@@ -75,7 +75,7 @@ namespace Logic
                 {
                     Rent rent = new Rent
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Аренды")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         EmployeeID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
@@ -92,7 +92,7 @@ namespace Logic
         }
         public void Delete(int id)
         {
-            string query = "DELETE FROM Аренда WHERE ID_Аренды = @id;";
+            string query = "DELETE FROM Аренда WHERE ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 

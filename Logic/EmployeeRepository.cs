@@ -20,22 +20,24 @@ namespace Logic
         }
         public void Add(Employee employee)
         {
-            string query = "INSERT INTP Сотрудники" +
-                "(ФИО, Должность, Дата_приема_на_работу, Контактный_телефон, Хэш_пароля)" +
-                "VALUES @fio, @job, @date, @phone, @password_hash;";
+            string query = "INSERT INTO Пользователи" +
+                "(Логин, Хэш_пароля, ФИО, Телефон, Email, Тип_пользователя, Дата_регистрации, Должность_сотрудника)" +
+                "VALUES @login, @password_hash, @fio, @phone, @email, @type, @date, @job;";
             OleDbCommand command = new OleDbCommand(query, mc);
-
-            command.Parameters.AddWithValue("fio", employee.FIO);
-            command.Parameters.AddWithValue("job", employee.Job);
-            command.Parameters.AddWithValue("date", employee.EmploymentDate);
-            command.Parameters.AddWithValue("phone", employee.Phone);
+            command.Parameters.AddWithValue("login", employee.Login);
             command.Parameters.AddWithValue("password_hash", employee.PasswordHash);
+            command.Parameters.AddWithValue("fio", employee.FIO);
+            command.Parameters.AddWithValue("phone", employee.Phone);
+            command.Parameters.AddWithValue("email", employee.Email);
+            command.Parameters.AddWithValue("type", "сотрудник");
+            command.Parameters.AddWithValue("date", employee.RegistrationDate);
+            command.Parameters.AddWithValue("job", employee.Job);
 
             command.ExecuteNonQuery();
         }
         public Employee Get(int id)
         {
-            string query = "SELECT * FROM Сотрудники WHERE ID_Сотрудника = @id;";
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник' AND ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 
@@ -47,12 +49,42 @@ namespace Logic
                 {
                     employee = new Employee
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
-                        Job = r.GetString(r.GetOrdinal("Должность")),
-                        EmploymentDate = r.GetDateTime(r.GetOrdinal("Дата_приема_на_работу")),
-                        Phone = r.GetString(r.GetOrdinal("Контактный_телефон")),
-                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
+                        Email = r.GetString(r.GetOrdinal("Email")),
+                        RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
+                        Job = r.GetString(r.GetOrdinal("Должность_сотрудника")),
+                    };
+                }
+            }
+
+            return employee;
+        }
+        public Employee GetByLogin(string login)
+        {
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник' AND Логин = @login;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+            command.Parameters.AddWithValue("login", login);
+
+            Employee employee = null;
+
+            using (OleDbDataReader r = command.ExecuteReader())
+            {
+                if (r.Read()) // Check if a row is returned
+                {
+                    employee = new Employee
+                    {
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
+                        FIO = r.GetString(r.GetOrdinal("ФИО")),
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
+                        Email = r.GetString(r.GetOrdinal("Email")),
+                        RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
+                        Job = r.GetString(r.GetOrdinal("Должность_сотрудника")),
                     };
                 }
             }
@@ -61,7 +93,7 @@ namespace Logic
         }
         public IEnumerable<Employee> GetAll()
         {
-            string query = "SELECT * FROM Сотрудники;";
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник';";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Employee> employees = new List<Employee>();
@@ -72,12 +104,14 @@ namespace Logic
                 {
                     Employee employee = new Employee
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
-                        Job = r.GetString(r.GetOrdinal("Должность")),
-                        EmploymentDate = r.GetDateTime(r.GetOrdinal("Дата_приема_на_работу")),
-                        Phone = r.GetString(r.GetOrdinal("Контактный_телефон")),
-                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
+                        Email = r.GetString(r.GetOrdinal("Email")),
+                        RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
+                        Job = r.GetString(r.GetOrdinal("Должность_сотрудника")),
                     };
 
                     employees.Add(employee);
@@ -88,7 +122,7 @@ namespace Logic
         }
         public void Delete(int id)
         {
-            string query = "DELETE FROM Сотрудники WHERE ID_Сотрудника = @id;";
+            string query = "DELETE FROM Пользователи WHERE Тип_пользователя = 'сотрудник' AND ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 

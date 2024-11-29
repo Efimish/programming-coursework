@@ -20,7 +20,7 @@ namespace Logic
         }
         public void Add(Skis skis)
         {
-            string query = "INSERT INTP Лыжи" +
+            string query = "INSERT INTO Лыжи" +
                 "(Модель, Размер, Состояние, Цена_за_час, Статус)" +
                 "VALUES @model, @size, @condition, @price, @status;";
             OleDbCommand command = new OleDbCommand(query, mc);
@@ -35,7 +35,7 @@ namespace Logic
         }
         public Skis Get(int id)
         {
-            string query = "SELECT * FROM Лыжи WHERE ID_Лыж = @id;";
+            string query = "SELECT * FROM Лыжи WHERE ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 
@@ -47,7 +47,7 @@ namespace Logic
                 {
                     skis = new Skis
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Model = r.GetString(r.GetOrdinal("Модель")),
                         Size = r.GetInt32(r.GetOrdinal("Размер")),
                         Condition = r.GetString(r.GetOrdinal("Состояние")),
@@ -72,7 +72,7 @@ namespace Logic
                 {
                     Skis skis = new Skis
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Model = r.GetString(r.GetOrdinal("Модель")),
                         Size = r.GetInt32(r.GetOrdinal("Размер")),
                         Condition = r.GetString(r.GetOrdinal("Состояние")),
@@ -88,7 +88,7 @@ namespace Logic
         }
         public void Delete(int id)
         {
-            string query = "DELETE FROM Лыжи WHERE ID_Лыж = @id;";
+            string query = "DELETE FROM Лыжи WHERE ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 

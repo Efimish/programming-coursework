@@ -1,19 +1,14 @@
 ﻿using Logic;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ViewWinForms
 {
     public partial class FormLogin : Form
     {
+        EmployeeRepository employeeRepository = new EmployeeRepository();
         ClientRepository clientRepository = new ClientRepository();
+
         public FormLogin()
         {
             InitializeComponent();
@@ -21,20 +16,39 @@ namespace ViewWinForms
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            string phone = textBoxLogin.Text;
+            string login = textBoxLogin.Text;
             string password = textBoxPassword.Text;
 
-            if (phone.Length == 0 || password.Length == 0)
+            if (login.Length == 0 || password.Length == 0)
             {
                 MessageBox.Show("Заполните все поля!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Client client = clientRepository.GetByPhone(phone);
+            Employee employee = employeeRepository.GetByLogin(login);
+            string type;
+            string passwordHash;
+            if (employee != null)
+            {
+                type = "сотрудник";
+                passwordHash = employee.PasswordHash;
+            } else
+            {
+                Client client = clientRepository.GetByLogin(login);
+                if (client != null)
+                {
+                    type = "клиент";
+                    passwordHash = client.PasswordHash;
+                }
+                else
+                {
+                    MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBoxPassword.Text = "";
+                    return;
+                }
+            }
 
-            bool good = SecurePasswordHasher.Verify(password, client.PasswordHash);
-
-            if (!good)
+            if (!SecurePasswordHasher.Verify(password, passwordHash))
             {
                 MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBoxPassword.Text = "";
@@ -42,6 +56,19 @@ namespace ViewWinForms
             }
 
             // вошли в систему
+
+            if (type == "сотрудник") // как сотрудник
+            {
+                // Form Sotrudnik fff = new ...();
+                this.Hide();
+                // fff.Show();
+            }
+            else // как клиент
+            {
+                // Form Client fff = new ...();
+                this.Hide();
+                // fff.Show();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

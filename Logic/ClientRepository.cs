@@ -20,22 +20,24 @@ namespace Logic
         }
         public void Add(Client client)
         {
-            string query = "INSERT INTP Клиенты" +
-                "(ФИО, Номер_телефона, Email, Дата_регистрации, Бонусные_баллы, Хэш_пароля)" +
-                "VALUES @fio, @phone, @email, @date, @points, @password_hash;";
+            string query = "INSERT INTO Пользователи" +
+                "(Логин, Хэш_пароля, ФИО, Телефон, Email, Тип_пользователя, Дата_регистрации, Бонусные_баллы)" +
+                "VALUES @login, @password_hash, @fio, @phone, @email, @type, @date, @points;";
             OleDbCommand command = new OleDbCommand(query, mc);
+            command.Parameters.AddWithValue("login", client.Login);
+            command.Parameters.AddWithValue("password_hash", client.PasswordHash);
             command.Parameters.AddWithValue("fio", client.FIO);
             command.Parameters.AddWithValue("phone", client.Phone);
             command.Parameters.AddWithValue("email", client.Email);
+            command.Parameters.AddWithValue("type", "клиент");
             command.Parameters.AddWithValue("date", client.RegistrationDate);
             command.Parameters.AddWithValue("points", client.BonusPoints);
-            command.Parameters.AddWithValue("password_hash", client.PasswordHash);
 
             command.ExecuteNonQuery();
         }
         public Client Get(int id)
         {
-            string query = "SELECT * FROM Клиенты WHERE ID_Клиента = @id;";
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент' AND ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 
@@ -47,24 +49,25 @@ namespace Logic
                 {
                     client = new Client
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
-                        Phone = r.GetString(r.GetOrdinal("Номер_телефона")),
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
                         Email = r.GetString(r.GetOrdinal("Email")),
                         RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
                         BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы")),
-                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
                     };
                 }
             }
 
             return client;
         }
-        public Client GetByPhone(string phone)
+        public Client GetByLogin(string login)
         {
-            string query = "SELECT * FROM Клиенты WHERE Номер_телефона = @phone;";
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент' AND Логин = @login;";
             OleDbCommand command = new OleDbCommand(query, mc);
-            command.Parameters.AddWithValue("phone", phone);
+            command.Parameters.AddWithValue("login", login);
 
             Client client = null;
 
@@ -74,13 +77,14 @@ namespace Logic
                 {
                     client = new Client
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
-                        Phone = r.GetString(r.GetOrdinal("Номер_телефона")),
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
                         Email = r.GetString(r.GetOrdinal("Email")),
                         RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
                         BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы")),
-                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
                     };
                 }
             }
@@ -89,7 +93,7 @@ namespace Logic
         }
         public IEnumerable<Client> GetAll()
         {
-            string query = "SELECT * FROM Клиенты;";
+            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент';";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Client> clients = new List<Client>();
@@ -100,13 +104,14 @@ namespace Logic
                 {
                     Client client = new Client
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
+                        ID = r.GetInt32(r.GetOrdinal("ID")),
+                        Login = r.GetString(r.GetOrdinal("Логин")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
-                        Phone = r.GetString(r.GetOrdinal("Номер_телефона")),
+                        Phone = r.GetString(r.GetOrdinal("Телефон")),
                         Email = r.GetString(r.GetOrdinal("Email")),
                         RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
                         BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы")),
-                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
                     };
 
                     clients.Add(client);
@@ -117,7 +122,7 @@ namespace Logic
         }
         public void Delete(int id)
         {
-            string query = "DELETE FROM Клиенты WHERE ID_Клиента = @id;";
+            string query = "DELETE FROM Пользователи WHERE Тип_пользователя = 'клиент' AND ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.Parameters.AddWithValue("id", id);
 

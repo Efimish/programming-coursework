@@ -9,11 +9,12 @@ namespace Logic
     public class Client : IDomainObject
     {
         public int ID { get; set; }
+        public string Login { get; set; }
+        public string PasswordHash;
         public string FIO;
         public string Phone;
         public string Email;
         public DateTime RegistrationDate;
         public int BonusPoints;
-        public string PasswordHash;
     }
 }
