@@ -13,17 +13,17 @@ namespace ViewWinForms
 {
     public partial class FormMain : Form
     {
-        public Repository<Client> clientRepository;
-        public Repository<Skis> skisRepository;
-        public Repository<Employee> employeeRepository;
-        public Repository<Rent> rentRepository;
+        public IRepository<Client> clientRepository;
+        public IRepository<Skis> skisRepository;
+        public IRepository<Employee> employeeRepository;
+        public IRepository<Rent> rentRepository;
         public FormMain()
         {
             InitializeComponent();
-            clientRepository = new Repository<Client>();
-            skisRepository = new Repository<Skis>();
-            employeeRepository = new Repository<Employee>();
-            rentRepository = new Repository<Rent>();
+            clientRepository = new ClientRepository();
+            skisRepository = new SkisRepository();
+            employeeRepository = new EmployeeRepository();
+            rentRepository = new RentRepository();
         }
     }
 }

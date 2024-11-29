@@ -60,6 +60,33 @@ namespace Logic
 
             return client;
         }
+        public Client GetByPhone(string phone)
+        {
+            string query = "SELECT * FROM Клиенты WHERE Номер_телефона = @phone;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+            command.Parameters.AddWithValue("phone", phone);
+
+            Client client = null;
+
+            using (OleDbDataReader r = command.ExecuteReader())
+            {
+                if (r.Read()) // Check if a row is returned
+                {
+                    client = new Client
+                    {
+                        ID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
+                        FIO = r.GetString(r.GetOrdinal("ФИО")),
+                        Phone = r.GetString(r.GetOrdinal("Номер_телефона")),
+                        Email = r.GetString(r.GetOrdinal("Email")),
+                        RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
+                        BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы")),
+                        PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля"))
+                    };
+                }
+            }
+
+            return client;
+        }
         public IEnumerable<Client> GetAll()
         {
             string query = "SELECT * FROM Клиенты;";
