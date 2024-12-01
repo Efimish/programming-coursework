@@ -16,5 +16,10 @@ namespace Logic
         public string Email;
         public DateTime RegistrationDate;
         public string Job;
+
+        public override string ToString()
+        {
+            return $"Сотрудник №{ID}: {FIO}";
+        }
     }
 }

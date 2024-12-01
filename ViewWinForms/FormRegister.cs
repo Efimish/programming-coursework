@@ -57,9 +57,9 @@ namespace ViewWinForms
 
             // теперь можем войти
 
-            // Form Client fff = new ...();
+            FormClient formClient = new FormClient(client);
             this.Hide();
-            // fff.Show();
+            formClient.Show();
         }
     }
 }

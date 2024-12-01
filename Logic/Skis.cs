@@ -14,5 +14,10 @@ namespace Logic
         public string Condition;
         public int PricePerHour;
         public string Status;
+
+        public override string ToString()
+        {
+            return $"Лыжи №{ID}: {Model}, Размер: {Size}, Цена: {PricePerHour} руб/ч";
+        }
     }
 }

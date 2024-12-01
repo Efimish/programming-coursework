@@ -26,26 +26,25 @@ namespace ViewWinForms
             }
 
             Employee employee = employeeRepository.GetByLogin(login);
+            Client client = clientRepository.GetByLogin(login);
+
             string type;
             string passwordHash;
             if (employee != null)
             {
                 type = "сотрудник";
                 passwordHash = employee.PasswordHash;
-            } else
+            }
+            else if (client != null)
             {
-                Client client = clientRepository.GetByLogin(login);
-                if (client != null)
-                {
-                    type = "клиент";
-                    passwordHash = client.PasswordHash;
-                }
-                else
-                {
-                    MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    textBoxPassword.Text = "";
-                    return;
-                }
+                type = "клиент";
+                passwordHash = client.PasswordHash;
+            }
+            else
+            {
+                MessageBox.Show("Неверный логин или пароль!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBoxPassword.Text = "";
+                return;
             }
 
             if (!SecurePasswordHasher.Verify(password, passwordHash))
@@ -59,15 +58,15 @@ namespace ViewWinForms
 
             if (type == "сотрудник") // как сотрудник
             {
-                // Form Sotrudnik fff = new ...();
+                FormEmployee formEmployee = new FormEmployee(employee);
                 this.Hide();
-                // fff.Show();
+                formEmployee.Show();
             }
             else // как клиент
             {
-                // Form Client fff = new ...();
+                FormClient formClient = new FormClient(client);
                 this.Hide();
-                // fff.Show();
+                formClient.Show();
             }
         }
 

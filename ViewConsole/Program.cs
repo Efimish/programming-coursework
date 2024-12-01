@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Logic;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ViewConsole
 {
@@ -21,6 +24,7 @@ namespace ViewConsole
                 " - 4) Вывести все аренды\n" +
                 " - 5) Захешировать пароль\n" +
                 " - 6) Проверить пароль\n" +
+                " - 7) Тест\n" +
                 " - Escape) Выход"
             );
             Console.ResetColor();
@@ -128,9 +132,9 @@ namespace ViewConsole
                                     "\n  ID = " + rent.ID +
                                     "\n  ClientID = " + rent.ClientID +
                                     "\n  SkisID = " + rent.SkisID +
-                                    "\n  EmployeeID = " + rent.EmployeeID +
                                     "\n  StartTime = " + rent.StartTime +
                                     "\n  Price = " + rent.Price +
+                                    "\n  Done = " + rent.Done +
                                     "\n}"
                                 );
                             }
@@ -149,6 +153,32 @@ namespace ViewConsole
                             string hash = Console.ReadLine();
                             bool good = SecurePasswordHasher.Verify(password, hash);
                             Console.WriteLine(good ? "Верно" : "Не верно");
+                            break;
+                        }
+                    case ConsoleKey.D7:
+                        {
+                            string query = "INSERT INTO Аренда" +
+                                            "(ID_Клиента, ID_Лыж, Время_начала, Время_окончания, Стоимость, Завершено)" +
+                                            "VALUES (@client_id, @skis_id, @start_time, @end_time, @price, @done);";
+
+                            Rent rent = new Rent
+                            {
+                                ClientID = 1,
+                                SkisID = 2,
+                                StartTime = DateTime.Now,
+                                EndTime = DateTime.Now,
+                                Price = 0,
+                                Done = false,
+                            };
+
+                            query = query.Replace("@client_id", rent.ClientID.ToString());
+                            query = query.Replace("@skis_id", rent.SkisID.ToString());
+                            query = query.Replace("@start_time", rent.StartTime.ToString());
+                            query = query.Replace("@end_time", rent.EndTime.ToString());
+                            query = query.Replace("@price", rent.Price.ToString());
+                            query = query.Replace("@done", rent.Done.ToString());
+
+                            Console.WriteLine(query);
                             break;
                         }
                     case ConsoleKey.Escape:

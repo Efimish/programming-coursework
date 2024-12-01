@@ -16,5 +16,10 @@ namespace Logic
         public string Email;
         public DateTime RegistrationDate;
         public int BonusPoints;
+
+        public override string ToString()
+        {
+            return $"Клиент №{ID}: {FIO}";
+        }
     }
 }

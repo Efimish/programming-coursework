@@ -22,16 +22,16 @@ namespace Logic
         public void Add(Rent rent)
         {
             string query = "INSERT INTO Аренда" +
-                "(ID_Клиента, ID_Лыж, ID_Сотрудника, Время_начала, Время_окончания, Стоимость)" +
-                "VALUES @client_id, @skis_id, @employee_id, @start_time, @end_time, @price;";
+                "(ID_Клиента, ID_Лыж, Время_начала, Время_окончания, Стоимость, Завершено)" +
+                "VALUES (@client_id, @skis_id, @start_time, @end_time, @price, @done);";
             OleDbCommand command = new OleDbCommand(query, mc);
 
-            command.Parameters.AddWithValue("client_id", rent.ClientID);
-            command.Parameters.AddWithValue("skis_id", rent.SkisID);
-            command.Parameters.AddWithValue("employee_id", rent.EmployeeID);
-            command.Parameters.AddWithValue("start_time", rent.StartTime);
-            command.Parameters.AddWithValue("end_time", rent.EndTime);
-            command.Parameters.AddWithValue("price", rent.Price);
+            command.Parameters.AddWithValue("@client_id", rent.ClientID);
+            command.Parameters.AddWithValue("@skis_id", rent.SkisID);
+            command.Parameters.AddWithValue("@start_time", rent.StartTime);
+            command.Parameters.AddWithValue("@end_time", rent.EndTime);
+            command.Parameters.AddWithValue("@price", rent.Price);
+            command.Parameters.AddWithValue("@done", rent.Done);
 
             command.ExecuteNonQuery();
         }
@@ -52,10 +52,10 @@ namespace Logic
                         ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
-                        EmployeeID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),
                         EndTime = r.GetDateTime(r.GetOrdinal("Время_окончания")),
-                        Price = r.GetInt32(r.GetOrdinal("Стоимость"))
+                        Price = 0, //r.GetInt32(r.GetOrdinal("Стоимость")),
+                        Done = r.GetBoolean(r.GetOrdinal("Завершено"))
                     };
                 }
             }
@@ -78,10 +78,10 @@ namespace Logic
                         ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
-                        EmployeeID = r.GetInt32(r.GetOrdinal("ID_Сотрудника")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),
                         EndTime = r.GetDateTime(r.GetOrdinal("Время_окончания")),
-                        Price = 0
+                        Price = 0, //r.GetInt32(r.GetOrdinal("Стоимость")),
+                        Done = r.GetBoolean(r.GetOrdinal("Завершено"))
                     };
 
                     rents.Add(rent);
