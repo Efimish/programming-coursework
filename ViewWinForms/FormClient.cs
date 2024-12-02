@@ -11,6 +11,7 @@ namespace ViewWinForms
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
         Client client;
+        string orderBy = "Размер";
         List<Rent> currentRents;
         List<Skis> availableSkis;
         List<Skis> clientSkis;
@@ -19,21 +20,29 @@ namespace ViewWinForms
         {
             InitializeComponent();
             this.client = client;
-            RedrawLists();
+
+            comboBoxOrderBy.Items.Clear();
+            comboBoxOrderBy.Items.Add("Сбросить");
+            comboBoxOrderBy.Items.Add("Размер");
+            comboBoxOrderBy.Items.Add("Состояние");
+            comboBoxOrderBy.Items.Add("Цена за час");
+            comboBoxOrderBy.SelectedIndex = 0;
         }
 
         private void UpdateData()
         {
+            List<Skis> skis = skisRepository.GetAll(orderBy).ToList();
+
             currentRents = rentRepository.GetAll()
                 .Where(rent => !rent.Done)
                 .ToList();
 
-            availableSkis = skisRepository.GetAll()
-                .Where(skis => !currentRents.Select(r => r.SkisID).Contains(skis.ID))
+            availableSkis = skis
+                .Where(s => !currentRents.Select(r => r.SkisID).Contains(s.ID))
                 .ToList();
 
-            clientSkis = skisRepository.GetAll()
-                .Where(skis => currentRents.Where(r => r.ClientID == client.ID).Select(r => r.SkisID).Contains(skis.ID))
+            clientSkis = skis
+                .Where(s => currentRents.Where(r => r.ClientID == client.ID).Select(r => r.SkisID).Contains(s.ID))
                 .ToList();
         }
         private void RedrawLists()
@@ -93,9 +102,41 @@ namespace ViewWinForms
             Rent foundRent = currentRents.Where(r => r.SkisID == skis.ID).First();
             foundRent.Done = true;
             foundRent.EndTime = DateTime.Now;
-            foundRent.Price = (foundRent.EndTime - foundRent.StartTime).Seconds / 3600 * skis.PricePerHour;
+            foundRent.Price = ((foundRent.EndTime - foundRent.StartTime).Seconds + 3599) / 3600 * skis.PricePerHour;
 
-            //rentRepository.Update(foundRent);
+            rentRepository.Update(foundRent);
+            RedrawLists();
+        }
+
+        private void comboBoxOrderBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxOrderBy.SelectedIndex < 0) return;
+
+            string item = comboBoxOrderBy.SelectedItem as string;
+            switch (item)
+            {
+                case "Размер":
+                    {
+                        orderBy = "Размер";
+                        break;
+                    }
+                case "Состояние":
+                    {
+                        orderBy = "Состояние";
+                        break;
+                    }
+                case "Цена за час":
+                    {
+                        orderBy = "Цена_за_час";
+                        break;
+                    }
+                default:
+                    {
+                        orderBy = "ID";
+                        break;
+                    }
+            }
+            //MessageBox.Show($"Hello, can you hear me? Order By {orderBy}");
             RedrawLists();
         }
     }

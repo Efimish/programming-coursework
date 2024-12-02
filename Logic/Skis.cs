@@ -17,7 +17,7 @@ namespace Logic
 
         public override string ToString()
         {
-            return $"Лыжи №{ID}: {Model}, Размер: {Size}, Цена: {PricePerHour} руб/ч";
+            return $"Лыжи №{ID}: {Model}, Размер: {Size}, Состояние: {Condition}, Цена: {PricePerHour} руб/ч";
         }
     }
 }

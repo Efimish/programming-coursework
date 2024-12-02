@@ -28,8 +28,8 @@ namespace Logic
 
             command.Parameters.AddWithValue("@client_id", rent.ClientID);
             command.Parameters.AddWithValue("@skis_id", rent.SkisID);
-            command.Parameters.AddWithValue("@start_time", rent.StartTime);
-            command.Parameters.AddWithValue("@end_time", rent.EndTime);
+            command.Parameters.AddWithValue("@start_time", rent.StartTime.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@end_time", rent.EndTime.ToString("dd.MM.yyyy HH:mm"));
             command.Parameters.AddWithValue("@price", rent.Price);
             command.Parameters.AddWithValue("@done", rent.Done);
 
@@ -62,7 +62,7 @@ namespace Logic
 
             return rent;
         }
-        public IEnumerable<Rent> GetAll()
+        public IEnumerable<Rent> GetAll(string orderBy = "ID")
         {
             string query = "SELECT * FROM Аренда;";
             OleDbCommand command = new OleDbCommand(query, mc);
@@ -90,11 +90,33 @@ namespace Logic
 
             return rents;
         }
+        public void Update(Rent rent)
+        {
+            string query = "UPDATE Аренда SET\n" +
+                "ID_Клиента = @client_id,\n" +
+                "ID_Лыж = @skis_id,\n" +
+                "Время_начала = @start_time,\n" +
+                "Время_окончания = @end_time,\n" +
+                "Стоимость = @price,\n" +
+                "Завершено = @done\n" +
+                "WHERE ID = @id;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            command.Parameters.AddWithValue("@client_id", rent.ClientID);
+            command.Parameters.AddWithValue("@skis_id", rent.SkisID);
+            command.Parameters.AddWithValue("@start_time", rent.StartTime.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@end_time", rent.EndTime.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@price", rent.Price);
+            command.Parameters.AddWithValue("@done", rent.Done);
+            command.Parameters.AddWithValue("@id", rent.ID);
+
+            command.ExecuteNonQuery();
+        }
         public void Delete(int id)
         {
             string query = "DELETE FROM Аренда WHERE ID = @id;";
             OleDbCommand command = new OleDbCommand(query, mc);
-            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("@id", id);
 
             command.ExecuteNonQuery();
         }

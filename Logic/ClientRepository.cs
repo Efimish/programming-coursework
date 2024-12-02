@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Logic
 {
@@ -22,16 +23,16 @@ namespace Logic
         {
             string query = "INSERT INTO Пользователи" +
                 "(Логин, Хэш_пароля, ФИО, Телефон, Email, Тип_пользователя, Дата_регистрации, Бонусные_баллы)" +
-                "VALUES @login, @password_hash, @fio, @phone, @email, @type, @date, @points;";
+                "VALUES (@login, @password_hash, @fio, @phone, @email, @type, @date, @points);";
             OleDbCommand command = new OleDbCommand(query, mc);
-            command.Parameters.AddWithValue("login", client.Login);
-            command.Parameters.AddWithValue("password_hash", client.PasswordHash);
-            command.Parameters.AddWithValue("fio", client.FIO);
-            command.Parameters.AddWithValue("phone", client.Phone);
-            command.Parameters.AddWithValue("email", client.Email);
-            command.Parameters.AddWithValue("type", "клиент");
-            command.Parameters.AddWithValue("date", client.RegistrationDate);
-            command.Parameters.AddWithValue("points", client.BonusPoints);
+            command.Parameters.AddWithValue("@login", client.Login);
+            command.Parameters.AddWithValue("@password_hash", client.PasswordHash);
+            command.Parameters.AddWithValue("@fio", client.FIO);
+            command.Parameters.AddWithValue("@phone", client.Phone);
+            command.Parameters.AddWithValue("@email", client.Email);
+            command.Parameters.AddWithValue("@type", "клиент");
+            command.Parameters.AddWithValue("@date", client.RegistrationDate.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@points", client.BonusPoints);
 
             command.ExecuteNonQuery();
         }
@@ -91,7 +92,7 @@ namespace Logic
 
             return client;
         }
-        public IEnumerable<Client> GetAll()
+        public IEnumerable<Client> GetAll(string orderBy = "ID")
         {
             string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент';";
             OleDbCommand command = new OleDbCommand(query, mc);
@@ -119,6 +120,30 @@ namespace Logic
             }
 
             return clients;
+        }
+        public void Update(Client client)
+        {
+            string query = "UPDATE Пользователи SET\n" +
+                "Логин = @login,\n" +
+                "Хэш_пароля = @password_hash,\n" +
+                "ФИО = @fio,\n" +
+                "Телефон = @phone,\n" +
+                "Email = @email,\n" +
+                "Дата_регистрации = @date,\n" +
+                "Бонусные_баллы = @points\n" +
+                "WHERE Тип_пользователя = 'клиент' AND ID = @id;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            command.Parameters.AddWithValue("@login", client.Login);
+            command.Parameters.AddWithValue("@password_hash", client.PasswordHash);
+            command.Parameters.AddWithValue("@fio", client.FIO);
+            command.Parameters.AddWithValue("@phone", client.Phone);
+            command.Parameters.AddWithValue("@email", client.Email);
+            command.Parameters.AddWithValue("@date", client.RegistrationDate.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@points", client.BonusPoints);
+            command.Parameters.AddWithValue("@id", client.ID);
+
+            command.ExecuteNonQuery();
         }
         public void Delete(int id)
         {

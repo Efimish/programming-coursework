@@ -91,7 +91,7 @@ namespace Logic
 
             return employee;
         }
-        public IEnumerable<Employee> GetAll()
+        public IEnumerable<Employee> GetAll(string orderBy = "ID")
         {
             string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник';";
             OleDbCommand command = new OleDbCommand(query, mc);
@@ -119,6 +119,30 @@ namespace Logic
             }
 
             return employees;
+        }
+        public void Update(Employee employee)
+        {
+            string query = "UPDATE Пользователи SET\n" +
+                "Логин = @login,\n" +
+                "Хэш_пароля = @password_hash,\n" +
+                "ФИО = @fio,\n" +
+                "Телефон = @phone,\n" +
+                "Email = @email,\n" +
+                "Дата_регистрации = @date,\n" +
+                "Бонусные_баллы = @points\n" +
+                "WHERE Тип_пользователя = 'сотрудник' AND ID = @id;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            command.Parameters.AddWithValue("@login", employee.Login);
+            command.Parameters.AddWithValue("@password_hash", employee.PasswordHash);
+            command.Parameters.AddWithValue("@fio", employee.FIO);
+            command.Parameters.AddWithValue("@phone", employee.Phone);
+            command.Parameters.AddWithValue("@email", employee.Email);
+            command.Parameters.AddWithValue("@date", employee.RegistrationDate.ToString("dd.MM.yyyy HH:mm"));
+            command.Parameters.AddWithValue("@job", employee.Job);
+            command.Parameters.AddWithValue("@id", employee.ID);
+
+            command.ExecuteNonQuery();
         }
         public void Delete(int id)
         {

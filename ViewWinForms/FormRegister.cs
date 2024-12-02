@@ -54,6 +54,7 @@ namespace ViewWinForms
             };
 
             clientRepository.Add( client );
+            client = clientRepository.GetByLogin(login);
 
             // теперь можем войти
 

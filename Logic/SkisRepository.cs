@@ -59,9 +59,11 @@ namespace Logic
 
             return skis;
         }
-        public IEnumerable<Skis> GetAll()
+        public IEnumerable<Skis> GetAll(string orderBy = "ID")
         {
-            string query = "SELECT * FROM Лыжи;";
+            if (!new List<string> { "Размер", "Состояние", "Цена_за_час" }.Contains(orderBy)) orderBy = "ID";
+            string query = "SELECT * FROM Лыжи\n" +
+                $"ORDER BY {orderBy};";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Skis> skisList = new List<Skis>();
@@ -85,6 +87,26 @@ namespace Logic
             }
 
             return skisList;
+        }
+        public void Update(Skis skis)
+        {
+            string query = "UPDATE Лыжи SET\n" +
+                "Модель = @model,\n" +
+                "Размер = @size,\n" +
+                "Состояние = @condition,\n" +
+                "Цена_за_час = @price,\n" +
+                "Статус = @status,\n" +
+                "WHERE ID = @id;";
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            command.Parameters.AddWithValue("@model", skis.Model);
+            command.Parameters.AddWithValue("@size", skis.Size);
+            command.Parameters.AddWithValue("@condition", skis.Condition);
+            command.Parameters.AddWithValue("@price", skis.PricePerHour);
+            command.Parameters.AddWithValue("@status", skis.Status);
+            command.Parameters.AddWithValue("@id", skis.ID);
+
+            command.ExecuteNonQuery();
         }
         public void Delete(int id)
         {
