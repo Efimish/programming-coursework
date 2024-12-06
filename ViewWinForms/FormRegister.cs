@@ -42,7 +42,7 @@ namespace ViewWinForms
 
             string passwordHash = SecurePasswordHasher.Hash( password );
 
-            Client client = new Client
+            Client client = new Client(0)
             {
                 Login = login,
                 PasswordHash = passwordHash,

@@ -10,13 +10,10 @@ namespace Logic
 {
     public class ClientRepository : IRepository<Client>
     {
-        public static string connectionString =
-            "Provider=Microsoft.ACE.OLEDB.12.0;" +
-            "Data Source=db.mdb;";
         private OleDbConnection mc;
         public ClientRepository()
         {
-            mc = new OleDbConnection(connectionString);
+            mc = new OleDbConnection(DBConfig.ConnectionString);
             mc.Open();
         }
         public void Add(Client client)
@@ -48,9 +45,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    client = new Client
+                    client = new Client(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
@@ -76,9 +72,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    client = new Client
+                    client = new Client(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
@@ -103,16 +98,15 @@ namespace Logic
             {
                 while (r.Read()) // While we get rows
                 {
-                    Client client = new Client
+                    Client client = new Client(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
                         Phone = r.GetString(r.GetOrdinal("Телефон")),
                         Email = r.GetString(r.GetOrdinal("Email")),
                         RegistrationDate = r.GetDateTime(r.GetOrdinal("Дата_регистрации")),
-                        BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы")),
+                        BonusPoints = r.GetInt32(r.GetOrdinal("Бонусные_баллы"))
                     };
 
                     clients.Add(client);

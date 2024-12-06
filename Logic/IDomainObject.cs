@@ -8,6 +8,6 @@ namespace Logic
 {
     public interface IDomainObject
     {
-        int ID { get; set; }
+        int ID { get; }
     }
 }

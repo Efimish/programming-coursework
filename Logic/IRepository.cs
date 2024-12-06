@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Logic
 {
     public interface IRepository<T>
-        where T : class, IDomainObject, new()
+        where T : class, IDomainObject
     {
         void Add(T item);
         T Get(int id);

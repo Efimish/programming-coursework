@@ -210,6 +210,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientRepository.cs" />
+    <Compile Include="DBConfig.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EmployeeRepository.cs" />
     <Compile Include="IDomainObject.cs" />

@@ -171,7 +171,9 @@
             this.Controls.Add(this.labelPhone);
             this.Controls.Add(this.textBoxFIO);
             this.Controls.Add(this.labelFIO);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(1);
+            this.MaximizeBox = false;
             this.Name = "FormRegister";
             this.Text = "Регистрация в системе";
             this.ResumeLayout(false);

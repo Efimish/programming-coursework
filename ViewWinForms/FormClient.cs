@@ -74,7 +74,7 @@ namespace ViewWinForms
             DialogResult result = MessageBox.Show($"Вы точно хотите арендовать {skis}", "Подтвердите действие", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result != DialogResult.Yes) return;
 
-            Rent rent = new Rent
+            Rent rent = new Rent(0)
             {
                 ClientID = client.ID,
                 SkisID = skis.ID,

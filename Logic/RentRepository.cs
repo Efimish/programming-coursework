@@ -10,13 +10,10 @@ namespace Logic
 {
     public class RentRepository : IRepository<Rent>
     {
-        public static string connectionString =
-            "Provider=Microsoft.ACE.OLEDB.12.0;" +
-            "Data Source=db.mdb;";
         private OleDbConnection mc;
         public RentRepository()
         {
-            mc = new OleDbConnection(connectionString);
+            mc = new OleDbConnection(DBConfig.ConnectionString);
             mc.Open();
         }
         public void Add(Rent rent)
@@ -47,9 +44,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    rent = new Rent
+                    rent = new Rent(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),
@@ -73,9 +69,8 @@ namespace Logic
             {
                 while (r.Read()) // While we get rows
                 {
-                    Rent rent = new Rent
+                    Rent rent = new Rent(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         ClientID = r.GetInt32(r.GetOrdinal("ID_Клиента")),
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),

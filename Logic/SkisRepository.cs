@@ -9,13 +9,10 @@ namespace Logic
 {
     public class SkisRepository : IRepository<Skis>
     {
-        public static string connectionString =
-            "Provider=Microsoft.ACE.OLEDB.12.0;" +
-            "Data Source=db.mdb;";
         private OleDbConnection mc;
         public SkisRepository()
         {
-            mc = new OleDbConnection(connectionString);
+            mc = new OleDbConnection(DBConfig.ConnectionString);
             mc.Open();
         }
         public void Add(Skis skis)
@@ -45,9 +42,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    skis = new Skis
+                    skis = new Skis(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Model = r.GetString(r.GetOrdinal("Модель")),
                         Size = r.GetInt32(r.GetOrdinal("Размер")),
                         Condition = r.GetString(r.GetOrdinal("Состояние")),
@@ -72,9 +68,8 @@ namespace Logic
             {
                 while (r.Read()) // While we get rows
                 {
-                    Skis skis = new Skis
+                    Skis skis = new Skis(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Model = r.GetString(r.GetOrdinal("Модель")),
                         Size = r.GetInt32(r.GetOrdinal("Размер")),
                         Condition = r.GetString(r.GetOrdinal("Состояние")),

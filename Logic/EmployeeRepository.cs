@@ -9,13 +9,10 @@ namespace Logic
 {
     public class EmployeeRepository : IRepository<Employee>
     {
-        public static string connectionString =
-            "Provider=Microsoft.ACE.OLEDB.12.0;" +
-            "Data Source=db.mdb;";
         private OleDbConnection mc;
         public EmployeeRepository()
         {
-            mc = new OleDbConnection(connectionString);
+            mc = new OleDbConnection(DBConfig.ConnectionString);
             mc.Open();
         }
         public void Add(Employee employee)
@@ -47,9 +44,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    employee = new Employee
+                    employee = new Employee(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
@@ -75,9 +71,8 @@ namespace Logic
             {
                 if (r.Read()) // Check if a row is returned
                 {
-                    employee = new Employee
+                    employee = new Employee(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
@@ -102,9 +97,8 @@ namespace Logic
             {
                 while (r.Read()) // While we get rows
                 {
-                    Employee employee = new Employee
+                    Employee employee = new Employee(r.GetInt32(r.GetOrdinal("ID")))
                     {
-                        ID = r.GetInt32(r.GetOrdinal("ID")),
                         Login = r.GetString(r.GetOrdinal("Логин")),
                         PasswordHash = r.GetString(r.GetOrdinal("Хэш_пароля")),
                         FIO = r.GetString(r.GetOrdinal("ФИО")),
