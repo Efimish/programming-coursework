@@ -34,6 +34,7 @@
             this.labelPassword = new System.Windows.Forms.Label();
             this.buttonLogin = new System.Windows.Forms.Button();
             this.buttonRegister = new System.Windows.Forms.Button();
+            this.buttonHidePassword = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelLogin
@@ -49,7 +50,7 @@
             // textBoxLogin
             // 
             this.textBoxLogin.Location = new System.Drawing.Point(33, 42);
-            this.textBoxLogin.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.textBoxLogin.Margin = new System.Windows.Forms.Padding(1);
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(338, 20);
             this.textBoxLogin.TabIndex = 1;
@@ -57,11 +58,11 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Location = new System.Drawing.Point(33, 82);
-            this.textBoxPassword.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.textBoxPassword.Margin = new System.Windows.Forms.Padding(1);
             this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(338, 20);
+            this.textBoxPassword.Size = new System.Drawing.Size(310, 20);
             this.textBoxPassword.TabIndex = 4;
+            this.textBoxPassword.UseSystemPasswordChar = true;
             // 
             // labelPassword
             // 
@@ -76,7 +77,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Location = new System.Drawing.Point(33, 121);
-            this.buttonLogin.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.buttonLogin.Margin = new System.Windows.Forms.Padding(1);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonLogin.Size = new System.Drawing.Size(335, 45);
@@ -88,7 +89,7 @@
             // buttonRegister
             // 
             this.buttonRegister.Location = new System.Drawing.Point(110, 198);
-            this.buttonRegister.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.buttonRegister.Margin = new System.Windows.Forms.Padding(1);
             this.buttonRegister.Name = "buttonRegister";
             this.buttonRegister.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonRegister.Size = new System.Drawing.Size(180, 31);
@@ -97,11 +98,24 @@
             this.buttonRegister.UseVisualStyleBackColor = true;
             this.buttonRegister.Click += new System.EventHandler(this.button1_Click);
             // 
+            // buttonHidePassword
+            // 
+            this.buttonHidePassword.Location = new System.Drawing.Point(345, 77);
+            this.buttonHidePassword.Margin = new System.Windows.Forms.Padding(1);
+            this.buttonHidePassword.Name = "buttonHidePassword";
+            this.buttonHidePassword.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonHidePassword.Size = new System.Drawing.Size(26, 29);
+            this.buttonHidePassword.TabIndex = 7;
+            this.buttonHidePassword.Text = "👀";
+            this.buttonHidePassword.UseVisualStyleBackColor = true;
+            this.buttonHidePassword.Click += new System.EventHandler(this.buttonHidePassword_Click);
+            // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(400, 234);
+            this.Controls.Add(this.buttonHidePassword);
             this.Controls.Add(this.buttonRegister);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.textBoxPassword);
@@ -109,7 +123,7 @@
             this.Controls.Add(this.textBoxLogin);
             this.Controls.Add(this.labelLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "FormLogin";
             this.Text = "Вход в систему";
@@ -126,5 +140,6 @@
         private System.Windows.Forms.Label labelPassword;
         private System.Windows.Forms.Button buttonLogin;
         private System.Windows.Forms.Button buttonRegister;
+        private System.Windows.Forms.Button buttonHidePassword;
     }
 }

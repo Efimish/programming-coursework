@@ -16,5 +16,15 @@
         {
             return $"Лыжи №{ID}: {Model}, Размер: {Size}, Состояние: {Condition}, Цена: {PricePerHour} руб/ч";
         }
+        public bool Equals(Skis other)
+        {
+            return
+                this.ID == other.ID &&
+                this.Model == other.Model &&
+                this.Size == other.Size &&
+                this.Condition == other.Condition &&
+                this.PricePerHour == other.PricePerHour &&
+                this.Status == other.Status;
+        }
     }
 }

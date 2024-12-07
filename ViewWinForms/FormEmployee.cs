@@ -121,7 +121,41 @@ namespace ViewWinForms
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            // save somehow...
+            if (comboBoxTables.SelectedIndex < 0) return;
+            string selected = comboBoxTables.SelectedItem as string;
+
+            try
+            {
+                if (selected == "Client")
+                {
+                    clientRepository.UpdateAll(clients);
+                }
+                if (selected == "Skis")
+                {
+                    skisRepository.UpdateAll(skis);
+                }
+                if (selected == "Rent")
+                {
+                    rentRepository.UpdateAll(rents);
+                }
+            }
+            catch (Exception _)
+            {
+                MessageBox.Show(
+                    "Данные введены неправильно!\n" +
+                    "проверьте, что логин, номер телефона и email не повторяются",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
+            }
+            RedrawTable();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            FormLogin formLogin = new FormLogin();
+            formLogin.Closed += (s, args) => this.Close();
+            this.Hide();
+            formLogin.Show();
         }
     }
 }

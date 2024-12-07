@@ -136,8 +136,15 @@ namespace ViewWinForms
                         break;
                     }
             }
-            //MessageBox.Show($"Hello, can you hear me? Order By {orderBy}");
             RedrawLists();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            FormLogin formLogin = new FormLogin();
+            formLogin.Closed += (s, args) => this.Close();
+            this.Hide();
+            formLogin.Show();
         }
     }
 }

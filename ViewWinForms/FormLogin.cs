@@ -59,12 +59,14 @@ namespace ViewWinForms
             if (type == "сотрудник") // как сотрудник
             {
                 FormEmployee formEmployee = new FormEmployee(employee);
+                formEmployee.Closed += (s, args) => this.Close();
                 this.Hide();
                 formEmployee.Show();
             }
             else // как клиент
             {
                 FormClient formClient = new FormClient(client);
+                formClient.Closed += (s, args) => this.Close();
                 this.Hide();
                 formClient.Show();
             }
@@ -73,8 +75,14 @@ namespace ViewWinForms
         private void button1_Click(object sender, EventArgs e)
         {
             FormRegister formRegister = new FormRegister();
+            formRegister.Closed += (s, args) => this.Close();
             this.Hide();
             formRegister.Show();
+        }
+
+        private void buttonHidePassword_Click(object sender, EventArgs e)
+        {
+            textBoxPassword.UseSystemPasswordChar = !textBoxPassword.UseSystemPasswordChar;
         }
     }
 }

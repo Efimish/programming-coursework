@@ -103,6 +103,34 @@ namespace Logic
 
             command.ExecuteNonQuery();
         }
+        public void UpdateAll(IEnumerable<Skis> skisList)
+        {
+            // возможно работает не правильно
+
+            // Получаем список старых лыж
+            List<Skis> oldSkisList = GetAll().ToList();
+            foreach (Skis skis in skisList)
+            {
+                // Есть ли лыжи среди старых
+                bool exists = oldSkisList.Select(c => c.ID).Contains(skis.ID);
+                // Если нет - добавляем
+                if (!exists) Add(skis);
+                else
+                {
+                    // Если есть - изменились ли они?
+                    Skis oldSkis = oldSkisList.Where(c => c.ID == skis.ID).First();
+                    // Если да - обновляем
+                    if (!oldSkis.Equals(skis)) Update(skis);
+                    // Удаляем их из списка старых
+                    oldSkisList.Remove(oldSkis);
+                }
+            }
+            // Теперь в списке старых те, что нужно удалить
+            foreach (Skis oldSkis in oldSkisList)
+            {
+                Delete(oldSkis.ID);
+            }
+        }
         public void Delete(int id)
         {
             string query = "DELETE FROM Лыжи WHERE ID = @id;";

@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxOrderBy = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.buttonExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxSkis
@@ -111,11 +112,22 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Фильтрация";
             // 
+            // buttonExit
+            // 
+            this.buttonExit.Location = new System.Drawing.Point(664, 9);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(124, 45);
+            this.buttonExit.TabIndex = 7;
+            this.buttonExit.Text = "Выйти из системы";
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
             // FormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBoxOrderBy);
             this.Controls.Add(this.label2);
@@ -142,5 +154,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBoxOrderBy;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button buttonExit;
     }
 }

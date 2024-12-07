@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using Logic;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ViewConsole
 {
@@ -157,28 +152,32 @@ namespace ViewConsole
                         }
                     case ConsoleKey.D7:
                         {
-                            string query = "INSERT INTO Аренда" +
-                                            "(ID_Клиента, ID_Лыж, Время_начала, Время_окончания, Стоимость, Завершено)" +
-                                            "VALUES (@client_id, @skis_id, @start_time, @end_time, @price, @done);";
-
-                            Rent rent = new Rent
+                            Client c1 = new Client(0)
                             {
-                                ClientID = 1,
-                                SkisID = 2,
-                                StartTime = DateTime.Now,
-                                EndTime = DateTime.Now,
-                                Price = 0,
-                                Done = false,
+                                Login = "asd",
+                                PasswordHash = "$$$",
+                                FIO = "III",
+                                Phone = "+7",
+                                Email = "@@@",
+                                RegistrationDate = DateTime.Now,
+                                BonusPoints = 0
                             };
+                            Client c2 = new Client(0)
+                            {
+                                Login = "asd",
+                                PasswordHash = "$$$",
+                                FIO = "III",
+                                Phone = "+7",
+                                Email = "@@@",
+                                RegistrationDate = DateTime.Now,
+                                BonusPoints = 0
+                            };
+                            Console.WriteLine(c1.Equals(c2));
 
-                            query = query.Replace("@client_id", rent.ClientID.ToString());
-                            query = query.Replace("@skis_id", rent.SkisID.ToString());
-                            query = query.Replace("@start_time", rent.StartTime.ToString());
-                            query = query.Replace("@end_time", rent.EndTime.ToString());
-                            query = query.Replace("@price", rent.Price.ToString());
-                            query = query.Replace("@done", rent.Done.ToString());
+                            List<int> nums = new List<int>() { 1, 2, 3, 4, 5 };
+                            int? n1 = nums.Where(n => n > 10).FirstOrDefault();
+                            Console.WriteLine(n1);
 
-                            Console.WriteLine(query);
                             break;
                         }
                     case ConsoleKey.Escape:

@@ -139,6 +139,34 @@ namespace Logic
 
             command.ExecuteNonQuery();
         }
+        public void UpdateAll(IEnumerable<Client> clients)
+        {
+            // возможно работает не правильно
+
+            // Получаем список старых клиентов
+            List<Client> oldClients = GetAll().ToList();
+            foreach (Client client in clients)
+            {
+                // Есть ли клиент среди старых
+                bool exists = oldClients.Select(c => c.ID).Contains(client.ID);
+                // Если нет - добавляем
+                if (!exists) Add(client);
+                else
+                {
+                    // Если есть - изменился ли он?
+                    Client oldClient = oldClients.Where(c => c.ID == client.ID).First();
+                    // Если да - обновляем
+                    if (!oldClient.Equals(client)) Update(client);
+                    // Удаляем его из списка старых
+                    oldClients.Remove(oldClient);
+                }
+            }
+            // Теперь в списке старых те, кого нужно удалить
+            foreach (Client oldClient in oldClients)
+            {
+                Delete(oldClient.ID);
+            }
+        }
         public void Delete(int id)
         {
             string query = "DELETE FROM Пользователи WHERE Тип_пользователя = 'клиент' AND ID = @id;";

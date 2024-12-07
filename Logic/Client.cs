@@ -20,5 +20,17 @@ namespace Logic
         {
             return $"Клиент №{ID}: {FIO}";
         }
+        public bool Equals(Client other)
+        {
+            return
+                this.ID == other.ID &&
+                this.Login == other.Login &&
+                this.PasswordHash == other.PasswordHash &&
+                this.FIO == other.FIO &&
+                this.Phone == other.Phone &&
+                this.Email == other.Email &&
+                this.RegistrationDate == other.RegistrationDate &&
+                this.BonusPoints == other.BonusPoints;
+        }
     }
 }

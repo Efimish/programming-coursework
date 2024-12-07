@@ -40,6 +40,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
+            this.buttonHidePassword = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelFIO
@@ -141,8 +142,9 @@
             this.textBoxPassword.Location = new System.Drawing.Point(43, 250);
             this.textBoxPassword.Margin = new System.Windows.Forms.Padding(1);
             this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(358, 20);
+            this.textBoxPassword.Size = new System.Drawing.Size(332, 20);
             this.textBoxPassword.TabIndex = 9;
+            this.textBoxPassword.UseSystemPasswordChar = true;
             // 
             // labelPassword
             // 
@@ -154,11 +156,24 @@
             this.labelPassword.TabIndex = 8;
             this.labelPassword.Text = "Пароль";
             // 
+            // buttonHidePassword
+            // 
+            this.buttonHidePassword.Location = new System.Drawing.Point(377, 245);
+            this.buttonHidePassword.Margin = new System.Windows.Forms.Padding(1);
+            this.buttonHidePassword.Name = "buttonHidePassword";
+            this.buttonHidePassword.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonHidePassword.Size = new System.Drawing.Size(26, 29);
+            this.buttonHidePassword.TabIndex = 12;
+            this.buttonHidePassword.Text = "👀";
+            this.buttonHidePassword.UseVisualStyleBackColor = true;
+            this.buttonHidePassword.Click += new System.EventHandler(this.buttonHidePassword_Click);
+            // 
             // FormRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(454, 417);
+            this.Controls.Add(this.buttonHidePassword);
             this.Controls.Add(this.textBoxPassword);
             this.Controls.Add(this.labelPassword);
             this.Controls.Add(this.button1);
@@ -195,5 +210,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Label labelPassword;
+        private System.Windows.Forms.Button buttonHidePassword;
     }
 }

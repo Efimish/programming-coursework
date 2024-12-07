@@ -23,5 +23,16 @@ namespace Logic
         {
             return $"Аренда лыж №{ID} от {StartTime} до {EndTime}";
         }
+        public bool Equals(Rent other)
+        {
+            return
+                this.ID == other.ID &&
+                this.ClientID == other.ClientID &&
+                this.SkisID == other.SkisID &&
+                this.StartTime == other.StartTime &&
+                this.EndTime == other.EndTime &&
+                this.Price == other.Price &&
+                this.Done == other.Done;
+        }
     }
 }
