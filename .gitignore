@@ -6,6 +6,10 @@
 # MacOS
 .DS_Store
 
+# Environment config
+.env
+!.env.example
+
 # User-specific files
 *.rsuser
 *.suo

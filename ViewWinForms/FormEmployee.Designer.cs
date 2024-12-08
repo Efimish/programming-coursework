@@ -35,6 +35,9 @@
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonCreateTable = new System.Windows.Forms.Button();
+            this.buttonBackup = new System.Windows.Forms.Button();
+            this.buttonSendEmails = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -105,11 +108,44 @@
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
+            // buttonCreateTable
+            // 
+            this.buttonCreateTable.Location = new System.Drawing.Point(668, 216);
+            this.buttonCreateTable.Name = "buttonCreateTable";
+            this.buttonCreateTable.Size = new System.Drawing.Size(120, 38);
+            this.buttonCreateTable.TabIndex = 9;
+            this.buttonCreateTable.Text = "Создать новую таблицу";
+            this.buttonCreateTable.UseVisualStyleBackColor = true;
+            this.buttonCreateTable.Click += new System.EventHandler(this.buttonCreateTable_Click);
+            // 
+            // buttonBackup
+            // 
+            this.buttonBackup.Location = new System.Drawing.Point(12, 322);
+            this.buttonBackup.Name = "buttonBackup";
+            this.buttonBackup.Size = new System.Drawing.Size(120, 38);
+            this.buttonBackup.TabIndex = 10;
+            this.buttonBackup.Text = "Сделать бэкап базы";
+            this.buttonBackup.UseVisualStyleBackColor = true;
+            this.buttonBackup.Click += new System.EventHandler(this.buttonBackup_Click);
+            // 
+            // buttonSendEmails
+            // 
+            this.buttonSendEmails.Location = new System.Drawing.Point(138, 322);
+            this.buttonSendEmails.Name = "buttonSendEmails";
+            this.buttonSendEmails.Size = new System.Drawing.Size(120, 38);
+            this.buttonSendEmails.TabIndex = 11;
+            this.buttonSendEmails.Text = "Разослать всем спам";
+            this.buttonSendEmails.UseVisualStyleBackColor = true;
+            this.buttonSendEmails.Click += new System.EventHandler(this.buttonSendEmails_Click);
+            // 
             // FormEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonSendEmails);
+            this.Controls.Add(this.buttonBackup);
+            this.Controls.Add(this.buttonCreateTable);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.buttonReset);
@@ -117,8 +153,10 @@
             this.Controls.Add(this.buttonAddRow);
             this.Controls.Add(this.comboBoxTables);
             this.Controls.Add(this.dataGridViewTable);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MinimizeBox = false;
             this.Name = "FormEmployee";
-            this.Text = "FormEmployee";
+            this.Text = "Администрация аренды лыж";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).EndInit();
             this.ResumeLayout(false);
 
@@ -133,5 +171,8 @@
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Button buttonExit;
+        private System.Windows.Forms.Button buttonCreateTable;
+        private System.Windows.Forms.Button buttonBackup;
+        private System.Windows.Forms.Button buttonSendEmails;
     }
 }

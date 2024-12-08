@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using DotNetEnv;
 
 namespace ViewWinForms
 {
@@ -14,6 +12,7 @@ namespace ViewWinForms
         [STAThread]
         static void Main()
         {
+            Env.Load(@"..\..\..\.env");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormLogin());

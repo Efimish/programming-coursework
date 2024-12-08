@@ -13,6 +13,8 @@ namespace ViewWinForms
 {
     public partial class FormEmployee : Form
     {
+        EmailManager emailManager = new EmailManager();
+        DatabaseManager databaseManager = new DatabaseManager();
         ClientRepository clientRepository = new ClientRepository();
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
@@ -139,7 +141,7 @@ namespace ViewWinForms
                     rentRepository.UpdateAll(rents);
                 }
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 MessageBox.Show(
                     "Данные введены неправильно!\n" +
@@ -156,6 +158,41 @@ namespace ViewWinForms
             formLogin.Closed += (s, args) => this.Close();
             this.Hide();
             formLogin.Show();
+        }
+
+        private void buttonCreateTable_Click(object sender, EventArgs e)
+        {
+            FormCreateTable formCreateTable = new FormCreateTable();
+            formCreateTable.ShowDialog();
+        }
+
+        private void buttonBackup_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                databaseManager.BackupDatabase();
+                MessageBox.Show("Успех", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            } catch (Exception)
+            {
+                MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonSendEmails_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                emailManager.SendEmail(
+                    clientRepository.GetAll().Select(c => c.Email),
+                    "рассылка спама",
+                    "всем привет ловите нашу рассылку спама"
+                );
+                MessageBox.Show("Успех", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

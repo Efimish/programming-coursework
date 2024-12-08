@@ -136,6 +136,8 @@
             this.Controls.Add(this.listBoxRentedSkis);
             this.Controls.Add(this.buttonRent);
             this.Controls.Add(this.listBoxSkis);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormClient";
             this.Text = "Аренда лыж";
             this.ResumeLayout(false);
