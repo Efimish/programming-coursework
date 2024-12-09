@@ -38,6 +38,7 @@
             this.buttonCreateTable = new System.Windows.Forms.Button();
             this.buttonBackup = new System.Windows.Forms.Button();
             this.buttonSendEmails = new System.Windows.Forms.Button();
+            this.buttonDeleteTable = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,6 +47,7 @@
             this.dataGridViewTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewTable.Location = new System.Drawing.Point(12, 12);
             this.dataGridViewTable.Name = "dataGridViewTable";
+            this.dataGridViewTable.RowHeadersWidth = 102;
             this.dataGridViewTable.Size = new System.Drawing.Size(649, 304);
             this.dataGridViewTable.TabIndex = 0;
             // 
@@ -138,11 +140,22 @@
             this.buttonSendEmails.UseVisualStyleBackColor = true;
             this.buttonSendEmails.Click += new System.EventHandler(this.buttonSendEmails_Click);
             // 
+            // buttonDeleteTable
+            // 
+            this.buttonDeleteTable.Location = new System.Drawing.Point(668, 260);
+            this.buttonDeleteTable.Name = "buttonDeleteTable";
+            this.buttonDeleteTable.Size = new System.Drawing.Size(120, 38);
+            this.buttonDeleteTable.TabIndex = 12;
+            this.buttonDeleteTable.Text = "Удалить таблицу";
+            this.buttonDeleteTable.UseVisualStyleBackColor = true;
+            this.buttonDeleteTable.Click += new System.EventHandler(this.buttonDeleteTable_Click);
+            // 
             // FormEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonDeleteTable);
             this.Controls.Add(this.buttonSendEmails);
             this.Controls.Add(this.buttonBackup);
             this.Controls.Add(this.buttonCreateTable);
@@ -174,5 +187,6 @@
         private System.Windows.Forms.Button buttonCreateTable;
         private System.Windows.Forms.Button buttonBackup;
         private System.Windows.Forms.Button buttonSendEmails;
+        private System.Windows.Forms.Button buttonDeleteTable;
     }
 }

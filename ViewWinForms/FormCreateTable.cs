@@ -13,13 +13,14 @@ namespace ViewWinForms
 {
     public partial class FormCreateTable : Form
     {
-        DatabaseManager databaseManager = new DatabaseManager();
+        FormEmployee formEmployee;
         List<TableColumn> tableColumns;
         List<TableColumn> removedTableColumns;
 
-        public FormCreateTable()
+        public FormCreateTable(FormEmployee formEmployee)
         {
             InitializeComponent();
+            this.formEmployee = formEmployee;
             tableColumns = new List<TableColumn>() { new TableColumn() };
             removedTableColumns = new List<TableColumn>();
 
@@ -114,7 +115,8 @@ namespace ViewWinForms
                 MessageBox.Show("Ключ должен быть только один!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            databaseManager.CreateTable(tableName, tableColumns);
+            formEmployee.databaseManager.CreateTable(tableName, tableColumns);
+            formEmployee.FillTablesList();
             MessageBox.Show("Таблица создана!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }

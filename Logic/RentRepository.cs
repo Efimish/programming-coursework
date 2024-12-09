@@ -50,7 +50,7 @@ namespace Logic
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),
                         EndTime = r.GetDateTime(r.GetOrdinal("Время_окончания")),
-                        Price = 0, //r.GetInt32(r.GetOrdinal("Стоимость")),
+                        Price = r.GetInt32(r.GetOrdinal("Стоимость")),
                         Done = r.GetBoolean(r.GetOrdinal("Завершено"))
                     };
                 }
@@ -75,7 +75,7 @@ namespace Logic
                         SkisID = r.GetInt32(r.GetOrdinal("ID_Лыж")),
                         StartTime = r.GetDateTime(r.GetOrdinal("Время_начала")),
                         EndTime = r.GetDateTime(r.GetOrdinal("Время_окончания")),
-                        Price = 0, //r.GetInt32(r.GetOrdinal("Стоимость")),
+                        Price = r.GetInt32(r.GetOrdinal("Стоимость")),
                         Done = r.GetBoolean(r.GetOrdinal("Завершено"))
                     };
 

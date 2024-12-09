@@ -14,12 +14,13 @@ namespace ViewWinForms
     public partial class FormEmployee : Form
     {
         EmailManager emailManager = new EmailManager();
-        DatabaseManager databaseManager = new DatabaseManager();
+        public DatabaseManager databaseManager = new DatabaseManager();
         ClientRepository clientRepository = new ClientRepository();
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
         Employee employee;
 
+        List<string> tables;
         List<Client> clients;
         List<Skis> skis;
         List<Rent> rents;
@@ -32,14 +33,26 @@ namespace ViewWinForms
             ResetLists();
 
             comboBoxTables.Items.Clear();
-            comboBoxTables.Items.Add("Client");
-            comboBoxTables.Items.Add("Skis");
-            comboBoxTables.Items.Add("Rent");
+            foreach (string table in tables)
+            {
+                comboBoxTables.Items.Add(table);
+            }
             comboBoxTables.SelectedIndex = 0;
+        }
+
+        public void FillTablesList()
+        {
+            ResetLists();
+            comboBoxTables.Items.Clear();
+            foreach (string table in tables)
+            {
+                comboBoxTables.Items.Add(table);
+            }
         }
 
         public void ResetLists()
         {
+            tables = databaseManager.GetAllTables().ToList();
             clients = clientRepository.GetAll().ToList();
             skis = skisRepository.GetAll().ToList();
             rents = rentRepository.GetAll().ToList();
@@ -52,15 +65,15 @@ namespace ViewWinForms
             string selected = comboBoxTables.SelectedItem as string;
 
             dataGridViewTable.AllowUserToAddRows = true;
-            if (selected == "Client")
+            if (selected == "Пользователи")
             {
                 dataGridViewTable.DataSource = clients;
             }
-            if (selected == "Skis")
+            if (selected == "Лыжи")
             {
                 dataGridViewTable.DataSource = skis;
             }
-            if (selected == "Rent")
+            if (selected == "Аренда")
             {
                 dataGridViewTable.DataSource = rents;
             }
@@ -75,15 +88,15 @@ namespace ViewWinForms
         {
             if (comboBoxTables.SelectedIndex < 0) return;
             string selected = comboBoxTables.SelectedItem as string;
-            if (selected == "Client")
+            if (selected == "Пользователи")
             {
                 clients.Add(new Client(0));
             }
-            if (selected == "Skis")
+            if (selected == "Лыжи")
             {
                 skis.Add(new Skis(0));
             }
-            if (selected == "Rent")
+            if (selected == "Аренда")
             {
                 rents.Add(new Rent(0));
             }
@@ -100,15 +113,15 @@ namespace ViewWinForms
             int selectedIndex = cells[0].RowIndex;
             if (selectedIndex < 0) return;
 
-            if (selected == "Client")
+            if (selected == "Пользователи")
             {
                 clients.RemoveAt(selectedIndex);
             }
-            if (selected == "Skis")
+            if (selected == "Лыжи")
             {
                 skis.RemoveAt(selectedIndex);
             }
-            if (selected == "Rent")
+            if (selected == "Аренда")
             {
                 rents.RemoveAt(selectedIndex);
             }
@@ -128,15 +141,15 @@ namespace ViewWinForms
 
             try
             {
-                if (selected == "Client")
+                if (selected == "Пользователи")
                 {
                     clientRepository.UpdateAll(clients);
                 }
-                if (selected == "Skis")
+                if (selected == "Лыжи")
                 {
                     skisRepository.UpdateAll(skis);
                 }
-                if (selected == "Rent")
+                if (selected == "Аренда")
                 {
                     rentRepository.UpdateAll(rents);
                 }
@@ -162,7 +175,7 @@ namespace ViewWinForms
 
         private void buttonCreateTable_Click(object sender, EventArgs e)
         {
-            FormCreateTable formCreateTable = new FormCreateTable();
+            FormCreateTable formCreateTable = new FormCreateTable(this);
             formCreateTable.ShowDialog();
         }
 
@@ -171,7 +184,7 @@ namespace ViewWinForms
             try
             {
                 databaseManager.BackupDatabase();
-                MessageBox.Show("Успех", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } catch (Exception)
             {
                 MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -187,11 +200,28 @@ namespace ViewWinForms
                     "рассылка спама",
                     "всем привет ловите нашу рассылку спама"
                 );
-                MessageBox.Show("Успех", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception)
             {
                 MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonDeleteTable_Click(object sender, EventArgs e)
+        {
+            if (comboBoxTables.SelectedIndex < 0) return;
+            string selected = comboBoxTables.SelectedItem as string;
+
+            try
+            {
+                databaseManager.DeleteTable(selected);
+                FillTablesList();
+                comboBoxTables.SelectedIndex = 0;
+                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            } catch (Exception)
+            {
+                MessageBox.Show("связи сами удаляйте", "Ой", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
