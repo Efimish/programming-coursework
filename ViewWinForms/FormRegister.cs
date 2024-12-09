@@ -45,19 +45,25 @@ namespace ViewWinForms
                 return;
             }
 
-            if (clients.Where(c => c.Login == login).Count() > 0)
+            if(!EmailManager.IsEmailValid(email))
+            {
+                MessageBox.Show("Введите корректный Email!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (clients.Count(c => c.Login == login) > 0)
             {
                 MessageBox.Show("Этот логин уже занят!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (clients.Where(c => c.Phone == phone).Count() > 0)
+            if (clients.Count(c => c.Phone == phone) > 0)
             {
                 MessageBox.Show("Этот номер телефона уже занят!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (clients.Where(c => c.Email == email).Count() > 0)
+            if (clients.Count(c => c.Email == email) > 0)
             {
                 MessageBox.Show("Этот Email уже занят!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;

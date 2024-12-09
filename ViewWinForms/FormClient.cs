@@ -8,6 +8,7 @@ namespace ViewWinForms
 {
     public partial class FormClient : Form
     {
+        EmailManager emailManager = new EmailManager();
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
         Client client;
@@ -62,7 +63,7 @@ namespace ViewWinForms
             }
         }
 
-        private void buttonRent_Click(object sender, EventArgs e)
+        private async void buttonRent_Click(object sender, EventArgs e)
         {
             if (listBoxSkis.SelectedIndex < 0)
             {
@@ -85,6 +86,7 @@ namespace ViewWinForms
             };
             rentRepository.Add(rent);
             RedrawLists();
+            await emailManager.SendRent(client.Email, rent, skis);
         }
 
         private void buttonReturn_Click(object sender, EventArgs e)

@@ -15,23 +15,44 @@ namespace Logic
         private readonly string smtpUser;                     // Your email address
         private readonly string smtpPassword;                 // Your email password (be cautious with this)
 
-        private readonly NetworkCredential networkCredential;
-        private readonly SmtpClient smtpClient;
+        private NetworkCredential networkCredential;
+        private SmtpClient smtpClient;
 
         public EmailManager()
         {
-            this.smtpUser = Environment.GetEnvironmentVariable("EMAIL_USERNAME");
-            this.smtpPassword = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
+            smtpUser = Environment.GetEnvironmentVariable("EMAIL_USERNAME");
+            smtpPassword = Environment.GetEnvironmentVariable("EMAIL_PASSWORD");
 
-            this.networkCredential = new NetworkCredential(smtpUser, smtpPassword);
-            this.smtpClient = new SmtpClient(smtpHost, smtpPort)
+            if (string.IsNullOrWhiteSpace(smtpUser) || string.IsNullOrWhiteSpace(smtpPassword))
             {
-                Credentials = networkCredential,
-                EnableSsl = true // Enable SSL for secure connection
-            };
+                throw new Exception(
+                    "Не удалось прочитать Email адрес и пароль из окружения." +
+                    "Убедитесь, что создали и заполниили файл `.env` в корне решения." +
+                    "(Рядом с файлом `.env.example`)"
+                );
+            }
         }
 
-        public bool IsEmailValid(string email)
+        private void EnsureConnected()
+        {
+            if (smtpClient == null)
+            {
+                try
+                {
+                    networkCredential = new NetworkCredential(smtpUser, smtpPassword);
+                    smtpClient = new SmtpClient(smtpHost, smtpPort)
+                    {
+                        Credentials = networkCredential,
+                        EnableSsl = true // Enable SSL for secure connection
+                    };
+                } catch (Exception)
+                {
+                    throw new Exception("Не удалось подключиться к SMTP");
+                }
+            }
+        }
+
+        public static bool IsEmailValid(string email)
         {
             try
             {
@@ -46,6 +67,7 @@ namespace Logic
 
         public void SendEmail(IEnumerable<string> toEmails, string subject, string body)
         {
+            EnsureConnected();
             MailMessage mailMessage = new MailMessage()
             {
                 From = new MailAddress(smtpUser),
@@ -60,6 +82,37 @@ namespace Logic
             }
 
             smtpClient.Send(mailMessage);
+        }
+
+        public async Task SendRent(string email, Rent rent, Skis skis)
+        {
+            EnsureConnected();
+            if (!IsEmailValid(email)) throw new Exception("Указан неверный адрес Email");
+
+            string date = rent.StartTime.ToString("D");
+            string time = rent.StartTime.ToString("t");
+            string body =
+                "Здравствуйте!\n" +
+                $"Сегодня в {time} вы арендовали лыжи №{skis.ID} - {skis.Model}.\n" +
+                $"Каждый час аренды обойдется вам в {skis.PricePerHour} рублей/час.";
+
+            MailMessage message = new MailMessage()
+            {
+                From = new MailAddress(smtpUser),
+                Subject = $"Аренда лыж от {date}",
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            message.To.Add(email);
+
+            try
+            {
+                await smtpClient.SendMailAsync(message);
+            } catch (Exception)
+            {
+                throw new Exception("Не удалось отправить Email");
+            }
         }
     }
 }
