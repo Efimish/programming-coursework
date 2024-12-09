@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Logic
 {
@@ -65,10 +66,10 @@ namespace Logic
             }
         }
 
-        public void SendEmail(IEnumerable<string> toEmails, string subject, string body)
+        public async Task SendEmail(IEnumerable<string> toEmails, string subject, string body)
         {
             EnsureConnected();
-            MailMessage mailMessage = new MailMessage()
+            MailMessage message = new MailMessage()
             {
                 From = new MailAddress(smtpUser),
                 Subject = subject,
@@ -78,10 +79,17 @@ namespace Logic
 
             foreach (string toEmail in toEmails)
             {
-                if (IsEmailValid(toEmail)) mailMessage.To.Add(toEmail);
+                if (IsEmailValid(toEmail)) message.To.Add(toEmail);
             }
 
-            smtpClient.Send(mailMessage);
+            try
+            {
+                await smtpClient.SendMailAsync(message);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Не удалось отправить Email");
+            }
         }
 
         public async Task SendRent(string email, Rent rent, Skis skis)

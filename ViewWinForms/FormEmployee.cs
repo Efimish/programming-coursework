@@ -191,23 +191,6 @@ namespace ViewWinForms
             }
         }
 
-        private void buttonSendEmails_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                emailManager.SendEmail(
-                    clientRepository.GetAll().Select(c => c.Email),
-                    "рассылка спама",
-                    "всем привет ловите нашу рассылку спама"
-                );
-                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void buttonDeleteTable_Click(object sender, EventArgs e)
         {
             if (comboBoxTables.SelectedIndex < 0) return;

@@ -37,7 +37,6 @@
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonCreateTable = new System.Windows.Forms.Button();
             this.buttonBackup = new System.Windows.Forms.Button();
-            this.buttonSendEmails = new System.Windows.Forms.Button();
             this.buttonDeleteTable = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             this.SuspendLayout();
@@ -130,16 +129,6 @@
             this.buttonBackup.UseVisualStyleBackColor = true;
             this.buttonBackup.Click += new System.EventHandler(this.buttonBackup_Click);
             // 
-            // buttonSendEmails
-            // 
-            this.buttonSendEmails.Location = new System.Drawing.Point(138, 322);
-            this.buttonSendEmails.Name = "buttonSendEmails";
-            this.buttonSendEmails.Size = new System.Drawing.Size(120, 38);
-            this.buttonSendEmails.TabIndex = 11;
-            this.buttonSendEmails.Text = "Разослать всем спам";
-            this.buttonSendEmails.UseVisualStyleBackColor = true;
-            this.buttonSendEmails.Click += new System.EventHandler(this.buttonSendEmails_Click);
-            // 
             // buttonDeleteTable
             // 
             this.buttonDeleteTable.Location = new System.Drawing.Point(668, 260);
@@ -156,7 +145,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.buttonDeleteTable);
-            this.Controls.Add(this.buttonSendEmails);
             this.Controls.Add(this.buttonBackup);
             this.Controls.Add(this.buttonCreateTable);
             this.Controls.Add(this.buttonExit);
@@ -186,7 +174,6 @@
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonCreateTable;
         private System.Windows.Forms.Button buttonBackup;
-        private System.Windows.Forms.Button buttonSendEmails;
         private System.Windows.Forms.Button buttonDeleteTable;
     }
 }
