@@ -12,7 +12,7 @@ namespace ViewWinForms
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
         Client client;
-        string orderBy = "Размер";
+        string filter = null;
         List<Rent> currentRents;
         List<Skis> availableSkis;
         List<Skis> clientSkis;
@@ -22,17 +22,18 @@ namespace ViewWinForms
             InitializeComponent();
             this.client = client;
 
-            comboBoxOrderBy.Items.Clear();
-            comboBoxOrderBy.Items.Add("Сбросить");
-            comboBoxOrderBy.Items.Add("Размер");
-            comboBoxOrderBy.Items.Add("Состояние");
-            comboBoxOrderBy.Items.Add("Цена за час");
-            comboBoxOrderBy.SelectedIndex = 0;
+            comboBoxFilter.Items.Clear();
+            comboBoxFilter.Items.Add("Сбросить");
+            comboBoxFilter.Items.Add("Состояние");
+            comboBoxFilter.Items.Add("Цена за час <");
+            comboBoxFilter.SelectedIndex = 0;
+
+            RedrawLists();
         }
 
         private void UpdateData()
         {
-            List<Skis> skis = skisRepository.GetAll(orderBy).ToList();
+            List<Skis> skis = skisRepository.GetAll(filter).ToList();
 
             currentRents = rentRepository.GetAll()
                 .Where(rent => !rent.Done)
@@ -112,33 +113,22 @@ namespace ViewWinForms
 
         private void comboBoxOrderBy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxOrderBy.SelectedIndex < 0) return;
-
-            string item = comboBoxOrderBy.SelectedItem as string;
+            if (comboBoxFilter.SelectedIndex < 0) return;
+            string item = comboBoxFilter.SelectedItem as string;
             switch (item)
             {
-                case "Размер":
+                case "Сбросить":
                     {
-                        orderBy = "Размер";
-                        break;
-                    }
-                case "Состояние":
-                    {
-                        orderBy = "Состояние";
-                        break;
-                    }
-                case "Цена за час":
-                    {
-                        orderBy = "Цена_за_час";
+                        textBoxFilter.Enabled = false;
                         break;
                     }
                 default:
                     {
-                        orderBy = "ID";
+                        textBoxFilter.Enabled = true;
                         break;
                     }
             }
-            RedrawLists();
+            textBoxFilter.Text = "";
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -147,6 +137,48 @@ namespace ViewWinForms
             formLogin.Closed += (s, args) => this.Close();
             this.Hide();
             formLogin.Show();
+        }
+
+        private void buttonFilter_Click(object sender, EventArgs e)
+        {
+            if (comboBoxFilter.SelectedIndex < 0) return;
+
+            string item = comboBoxFilter.SelectedItem as string;
+            switch (item)
+            {
+                case "Состояние":
+                    {
+                        string condition = textBoxFilter.Text;
+                        if (string.IsNullOrEmpty(condition))
+                        {
+                            MessageBox.Show("Введите состояние!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        filter = $"Состояние = '{condition}'";
+                        break;
+                    }
+                case "Цена за час <":
+                    {
+                        int price;
+                        try
+                        {
+                            price = Convert.ToInt32(textBoxFilter.Text);
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Введите корректную цену!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        filter = $"Цена_за_час < {price}";
+                        break;
+                    }
+                default:
+                    {
+                        filter = null;
+                        break;
+                    }
+            }
+            RedrawLists();
         }
     }
 }

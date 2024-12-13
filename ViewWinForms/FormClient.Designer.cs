@@ -35,9 +35,11 @@
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxOrderBy = new System.Windows.Forms.ComboBox();
+            this.comboBoxFilter = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonExit = new System.Windows.Forms.Button();
+            this.textBoxFilter = new System.Windows.Forms.TextBox();
+            this.buttonFilter = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxSkis
@@ -94,14 +96,14 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Арендованные Вами лыжи";
             // 
-            // comboBoxOrderBy
+            // comboBoxFilter
             // 
-            this.comboBoxOrderBy.FormattingEnabled = true;
-            this.comboBoxOrderBy.Location = new System.Drawing.Point(15, 25);
-            this.comboBoxOrderBy.Name = "comboBoxOrderBy";
-            this.comboBoxOrderBy.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxOrderBy.TabIndex = 5;
-            this.comboBoxOrderBy.SelectedIndexChanged += new System.EventHandler(this.comboBoxOrderBy_SelectedIndexChanged);
+            this.comboBoxFilter.FormattingEnabled = true;
+            this.comboBoxFilter.Location = new System.Drawing.Point(15, 25);
+            this.comboBoxFilter.Name = "comboBoxFilter";
+            this.comboBoxFilter.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxFilter.TabIndex = 5;
+            this.comboBoxFilter.SelectedIndexChanged += new System.EventHandler(this.comboBoxOrderBy_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -122,14 +124,33 @@
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
+            // textBoxFilter
+            // 
+            this.textBoxFilter.Location = new System.Drawing.Point(142, 25);
+            this.textBoxFilter.Name = "textBoxFilter";
+            this.textBoxFilter.Size = new System.Drawing.Size(100, 20);
+            this.textBoxFilter.TabIndex = 8;
+            // 
+            // buttonFilter
+            // 
+            this.buttonFilter.Location = new System.Drawing.Point(248, 25);
+            this.buttonFilter.Name = "buttonFilter";
+            this.buttonFilter.Size = new System.Drawing.Size(75, 21);
+            this.buttonFilter.TabIndex = 9;
+            this.buttonFilter.Text = "применить";
+            this.buttonFilter.UseVisualStyleBackColor = true;
+            this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click);
+            // 
             // FormClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonFilter);
+            this.Controls.Add(this.textBoxFilter);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.comboBoxOrderBy);
+            this.Controls.Add(this.comboBoxFilter);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonReturn);
@@ -154,8 +175,10 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBoxOrderBy;
+        private System.Windows.Forms.ComboBox comboBoxFilter;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonExit;
+        private System.Windows.Forms.TextBox textBoxFilter;
+        private System.Windows.Forms.Button buttonFilter;
     }
 }

@@ -11,7 +11,7 @@ namespace Logic
     {
         void Add(T item);
         T Get(int id);
-        IEnumerable<T> GetAll(string orderBy = "ID");
+        IEnumerable<T> GetAll(string filter = null);
         void Update(T item);
         void Delete(int id);
     }

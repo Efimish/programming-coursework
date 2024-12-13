@@ -87,9 +87,10 @@ namespace Logic
 
             return client;
         }
-        public IEnumerable<Client> GetAll(string orderBy = "ID")
+        public IEnumerable<Client> GetAll(string filter = null)
         {
-            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент';";
+            string queryFilter = string.IsNullOrEmpty(filter) ? "" : $" AND {filter}";
+            string query = $"SELECT * FROM Пользователи WHERE Тип_пользователя = 'клиент'{queryFilter};";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Client> clients = new List<Client>();

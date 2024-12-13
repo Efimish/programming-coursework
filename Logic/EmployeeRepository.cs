@@ -86,9 +86,10 @@ namespace Logic
 
             return employee;
         }
-        public IEnumerable<Employee> GetAll(string orderBy = "ID")
+        public IEnumerable<Employee> GetAll(string filter = null)
         {
-            string query = "SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник';";
+            string queryFilter = string.IsNullOrEmpty(filter) ? "" : $" AND {filter}";
+            string query = $"SELECT * FROM Пользователи WHERE Тип_пользователя = 'сотрудник'{queryFilter};";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Employee> employees = new List<Employee>();

@@ -55,11 +55,10 @@ namespace Logic
 
             return skis;
         }
-        public IEnumerable<Skis> GetAll(string orderBy = "ID")
+        public IEnumerable<Skis> GetAll(string filter = null)
         {
-            if (!new List<string> { "Размер", "Состояние", "Цена_за_час" }.Contains(orderBy)) orderBy = "ID";
-            string query = "SELECT * FROM Лыжи\n" +
-                $"ORDER BY {orderBy};";
+            string queryFilter = string.IsNullOrEmpty(filter) ? "" : $" WHERE {filter}";
+            string query = $"SELECT * FROM Лыжи{queryFilter};";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Skis> skisList = new List<Skis>();

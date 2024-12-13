@@ -58,9 +58,10 @@ namespace Logic
 
             return rent;
         }
-        public IEnumerable<Rent> GetAll(string orderBy = "ID")
+        public IEnumerable<Rent> GetAll(string filter = null)
         {
-            string query = "SELECT * FROM Аренда;";
+            string queryFilter = string.IsNullOrEmpty(filter) ? "" : $" WHERE {filter}";
+            string query = $"SELECT * FROM Аренда{queryFilter};";
             OleDbCommand command = new OleDbCommand(query, mc);
 
             List<Rent> rents = new List<Rent>();
