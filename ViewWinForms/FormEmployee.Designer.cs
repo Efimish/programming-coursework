@@ -38,6 +38,7 @@
             this.buttonCreateTable = new System.Windows.Forms.Button();
             this.buttonBackup = new System.Windows.Forms.Button();
             this.buttonDeleteTable = new System.Windows.Forms.Button();
+            this.buttonStats = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -139,11 +140,22 @@
             this.buttonDeleteTable.UseVisualStyleBackColor = true;
             this.buttonDeleteTable.Click += new System.EventHandler(this.buttonDeleteTable_Click);
             // 
+            // buttonStats
+            // 
+            this.buttonStats.Location = new System.Drawing.Point(138, 322);
+            this.buttonStats.Name = "buttonStats";
+            this.buttonStats.Size = new System.Drawing.Size(120, 38);
+            this.buttonStats.TabIndex = 13;
+            this.buttonStats.Text = "Посмотреть статистику";
+            this.buttonStats.UseVisualStyleBackColor = true;
+            this.buttonStats.Click += new System.EventHandler(this.buttonStats_Click);
+            // 
             // FormEmployee
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonStats);
             this.Controls.Add(this.buttonDeleteTable);
             this.Controls.Add(this.buttonBackup);
             this.Controls.Add(this.buttonCreateTable);
@@ -175,5 +187,6 @@
         private System.Windows.Forms.Button buttonCreateTable;
         private System.Windows.Forms.Button buttonBackup;
         private System.Windows.Forms.Button buttonDeleteTable;
+        private System.Windows.Forms.Button buttonStats;
     }
 }

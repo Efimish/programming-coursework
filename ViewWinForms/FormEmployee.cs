@@ -16,8 +16,8 @@ namespace ViewWinForms
         EmailManager emailManager = new EmailManager();
         public DatabaseManager databaseManager = new DatabaseManager();
         ClientRepository clientRepository = new ClientRepository();
-        SkisRepository skisRepository = new SkisRepository();
-        RentRepository rentRepository = new RentRepository();
+        public SkisRepository skisRepository = new SkisRepository();
+        public RentRepository rentRepository = new RentRepository();
         Employee employee;
 
         List<string> tables;
@@ -206,6 +206,12 @@ namespace ViewWinForms
             {
                 MessageBox.Show("связи сами удаляйте", "Ой", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void buttonStats_Click(object sender, EventArgs e)
+        {
+            FormStats formStats = new FormStats(this);
+            formStats.ShowDialog();
         }
     }
 }

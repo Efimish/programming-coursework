@@ -70,5 +70,11 @@ namespace Logic
 
             return tables;
         }
+
+        public IEnumerable<string> GetAllConnections()
+        {
+            List<string> connections = new List<string>();
+            return connections;
+        }
     }
 }
