@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query.Internal;
+using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
@@ -137,6 +138,33 @@ namespace Logic
             command.Parameters.AddWithValue("id", id);
 
             command.ExecuteNonQuery();
+        }
+
+        public Dictionary<string, int> GetStats()
+        {
+            string query = "SELECT\n" +
+                "[Лыжи].[Модель] AS SkiName,\n" +
+                "COUNT([Аренда].[ID_Лыж]) AS RentCount\n" +
+                "FROM [Лыжи] INNER JOIN [Аренда]\n" +
+                "ON [Лыжи].[ID] = [Аренда].[ID_Лыж]\n" +
+                "GROUP BY [Лыжи].[Модель]\n" +
+                "ORDER BY COUNT([Аренда].[ID_Лыж]) DESC;";
+
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            Dictionary<string, int> stats = new Dictionary<string, int>();
+
+            using (OleDbDataReader r = command.ExecuteReader())
+            {
+                while (r.Read()) // While we get rows
+                {
+                    string model = r.GetString(r.GetOrdinal("SkiName"));
+                    int count = r.GetInt32(r.GetOrdinal("RentCount"));
+                    stats[model] = count;
+                }
+            }
+
+            return stats;
         }
     }
 }

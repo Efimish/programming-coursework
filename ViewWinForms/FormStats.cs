@@ -23,21 +23,13 @@ namespace ViewWinForms
 
             chartMostRented.Series.Clear();
 
-            var rents = formEmployee.rentRepository.GetAll();
-            var skis = formEmployee.skisRepository.GetAll();
-            var skisDict = skis.ToDictionary(s => s.ID, s => s.Model);
-            var rentsDict = new Dictionary<string, int>();
-            foreach(var ski in skisDict)
-            {
-                int amount = rents.Count(r => r.SkisID == ski.Key);
-                rentsDict.Add(ski.Value, amount);
-            }
+            Dictionary<string, int> stats = formEmployee.skisRepository.GetStats();
 
             string name = "Самые арендуемые лыжи";
             var points = chartMostRented.Series.Add(name).Points;
-            foreach (var rent in rentsDict.OrderByDescending(r => r.Value))
+            foreach (var stat in stats)
             {
-                points.AddXY(rent.Key, rent.Value);
+                points.AddXY(stat.Key, stat.Value);
             }
         }
     }

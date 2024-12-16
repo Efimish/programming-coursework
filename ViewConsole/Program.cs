@@ -19,13 +19,16 @@ namespace ViewConsole
                 " - 4) Вывести все аренды\n" +
                 " - 5) Захешировать пароль\n" +
                 " - 6) Проверить пароль\n" +
-                " - 7) Тест\n" +
+                " - 7) Вывести все таблицы\n" +
+                " - 8) Вывести все связи\n" +
+                " - 9) Тест\n" +
                 " - Escape) Выход"
             );
             Console.ResetColor();
         }
         static void Main(string[] args)
         {
+            DatabaseManager databaseManager = new DatabaseManager();
             IRepository<Client> clientRepository = new ClientRepository();
             IRepository<Skis> skisRepository = new SkisRepository();
             IRepository<Employee> employeeRepository = new EmployeeRepository();
@@ -151,6 +154,24 @@ namespace ViewConsole
                             break;
                         }
                     case ConsoleKey.D7:
+                        {
+                            List<string> tables = databaseManager.GetAllTables().ToList();
+                            foreach (string table in tables)
+                            {
+                                Console.WriteLine(table);
+                            }
+                            break;
+                        }
+                    case ConsoleKey.D8:
+                        {
+                            List<string> connections = databaseManager.GetAllConnections().ToList();
+                            foreach (string connection in connections)
+                            {
+                                Console.WriteLine(connection);
+                            }
+                            break;
+                        }
+                    case ConsoleKey.D9:
                         {
                             Client c1 = new Client(0)
                             {
