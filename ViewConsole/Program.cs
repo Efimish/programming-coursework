@@ -35,9 +35,12 @@ namespace ViewConsole
             IRepository<Rent> rentRepository = new RentRepository();
 
             Console.OutputEncoding = Encoding.UTF8;
+
+            bool printNextTime = true;
             while (true)
             {
-                PrintHelp();
+                if (printNextTime) PrintHelp();
+                printNextTime = true;
                 ConsoleKey key = Console.ReadKey().Key;
                 Console.WriteLine();
                 switch (key)
@@ -155,8 +158,8 @@ namespace ViewConsole
                         }
                     case ConsoleKey.D7:
                         {
-                            List<string> tables = databaseManager.GetAllTables().ToList();
-                            foreach (string table in tables)
+                            var tables = databaseManager.GetTables().ToList();
+                            foreach (var table in tables)
                             {
                                 Console.WriteLine(table);
                             }
@@ -164,8 +167,8 @@ namespace ViewConsole
                         }
                     case ConsoleKey.D8:
                         {
-                            List<string> connections = databaseManager.GetAllConnections().ToList();
-                            foreach (string connection in connections)
+                            var connections = databaseManager.GetRelations().ToList();
+                            foreach (var connection in connections)
                             {
                                 Console.WriteLine(connection);
                             }
@@ -204,6 +207,11 @@ namespace ViewConsole
                     case ConsoleKey.Escape:
                         {
                             Environment.Exit(0);
+                            break;
+                        }
+                    default:
+                        {
+                            printNextTime = false;
                             break;
                         }
                 }

@@ -167,7 +167,7 @@
             this.Controls.Add(this.comboBoxTables);
             this.Controls.Add(this.dataGridViewTable);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MinimizeBox = false;
+            this.MaximizeBox = false;
             this.Name = "FormEmployee";
             this.Text = "Администрация аренды лыж";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).EndInit();

@@ -57,6 +57,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 337);
             this.Controls.Add(this.chartMostRented);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "FormStats";
             this.Text = "Статистика";
             ((System.ComponentModel.ISupportInitialize)(this.chartMostRented)).EndInit();

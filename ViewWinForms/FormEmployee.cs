@@ -52,7 +52,7 @@ namespace ViewWinForms
 
         public void ResetLists()
         {
-            tables = databaseManager.GetAllTables().ToList();
+            tables = databaseManager.GetTables().Keys.ToList();
             clients = clientRepository.GetAll().ToList();
             skis = skisRepository.GetAll().ToList();
             rents = rentRepository.GetAll().ToList();
