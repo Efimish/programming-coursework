@@ -23,7 +23,7 @@ namespace ViewWinForms
 
             chartMostRented.Series.Clear();
 
-            Dictionary<string, int> stats = formEmployee.skisRepository.GetStats();
+            Dictionary<string, int> stats = formEmployee.databaseManager.GetSkisStats();
 
             string name = "Самые арендуемые лыжи";
             var points = chartMostRented.Series.Add(name).Points;

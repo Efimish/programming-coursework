@@ -34,6 +34,8 @@
             this.dataGridViewTable = new System.Windows.Forms.DataGridView();
             this.numericUpDownAmountOfColumns = new System.Windows.Forms.NumericUpDown();
             this.labelAmountOfColumns = new System.Windows.Forms.Label();
+            this.comboBoxConnect = new System.Windows.Forms.ComboBox();
+            this.labelConnect = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAmountOfColumns)).BeginInit();
             this.SuspendLayout();
@@ -74,7 +76,7 @@
             // 
             // numericUpDownAmountOfColumns
             // 
-            this.numericUpDownAmountOfColumns.Location = new System.Drawing.Point(413, 24);
+            this.numericUpDownAmountOfColumns.Location = new System.Drawing.Point(207, 25);
             this.numericUpDownAmountOfColumns.Minimum = new decimal(new int[] {
             1,
             0,
@@ -93,17 +95,36 @@
             // labelAmountOfColumns
             // 
             this.labelAmountOfColumns.AutoSize = true;
-            this.labelAmountOfColumns.Location = new System.Drawing.Point(410, 8);
+            this.labelAmountOfColumns.Location = new System.Drawing.Point(204, 9);
             this.labelAmountOfColumns.Name = "labelAmountOfColumns";
             this.labelAmountOfColumns.Size = new System.Drawing.Size(116, 13);
             this.labelAmountOfColumns.TabIndex = 6;
             this.labelAmountOfColumns.Text = "Количество столбцов";
+            // 
+            // comboBoxConnect
+            // 
+            this.comboBoxConnect.FormattingEnabled = true;
+            this.comboBoxConnect.Location = new System.Drawing.Point(401, 25);
+            this.comboBoxConnect.Name = "comboBoxConnect";
+            this.comboBoxConnect.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxConnect.TabIndex = 7;
+            // 
+            // labelConnect
+            // 
+            this.labelConnect.AutoSize = true;
+            this.labelConnect.Location = new System.Drawing.Point(398, 9);
+            this.labelConnect.Name = "labelConnect";
+            this.labelConnect.Size = new System.Drawing.Size(108, 13);
+            this.labelConnect.TabIndex = 8;
+            this.labelConnect.Text = "Связать с таблицей";
             // 
             // FormCreateTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(547, 316);
+            this.Controls.Add(this.labelConnect);
+            this.Controls.Add(this.comboBoxConnect);
             this.Controls.Add(this.labelAmountOfColumns);
             this.Controls.Add(this.numericUpDownAmountOfColumns);
             this.Controls.Add(this.dataGridViewTable);
@@ -129,5 +150,7 @@
         private System.Windows.Forms.DataGridView dataGridViewTable;
         private System.Windows.Forms.NumericUpDown numericUpDownAmountOfColumns;
         private System.Windows.Forms.Label labelAmountOfColumns;
+        private System.Windows.Forms.ComboBox comboBoxConnect;
+        private System.Windows.Forms.Label labelConnect;
     }
 }

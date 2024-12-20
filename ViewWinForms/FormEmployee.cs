@@ -16,46 +16,26 @@ namespace ViewWinForms
         EmailManager emailManager = new EmailManager();
         public DatabaseManager databaseManager = new DatabaseManager();
         ClientRepository clientRepository = new ClientRepository();
-        public SkisRepository skisRepository = new SkisRepository();
-        public RentRepository rentRepository = new RentRepository();
-        Employee employee;
+        SkisRepository skisRepository = new SkisRepository();
+        RentRepository rentRepository = new RentRepository();
 
-        List<string> tables;
-        List<Client> clients;
-        List<Skis> skis;
-        List<Rent> rents;
-
+        readonly Employee employee;
         public FormEmployee(Employee employee)
         {
             InitializeComponent();
             this.employee = employee;
 
-            ResetLists();
-
-            comboBoxTables.Items.Clear();
-            foreach (string table in tables)
-            {
-                comboBoxTables.Items.Add(table);
-            }
+            RefillTablesList();
             comboBoxTables.SelectedIndex = 0;
         }
 
-        public void FillTablesList()
+        public void RefillTablesList()
         {
-            ResetLists();
             comboBoxTables.Items.Clear();
-            foreach (string table in tables)
+            foreach (string table in databaseManager.GetTables().Keys)
             {
                 comboBoxTables.Items.Add(table);
             }
-        }
-
-        public void ResetLists()
-        {
-            tables = databaseManager.GetTables().Keys.ToList();
-            clients = clientRepository.GetAll().ToList();
-            skis = skisRepository.GetAll().ToList();
-            rents = rentRepository.GetAll().ToList();
         }
 
         private void RedrawTable()
@@ -65,17 +45,13 @@ namespace ViewWinForms
             string selected = comboBoxTables.SelectedItem as string;
 
             dataGridViewTable.AllowUserToAddRows = true;
-            if (selected == "Пользователи")
+            dataGridViewTable.DataSource = databaseManager.GetTable(selected);
+            foreach (DataGridViewColumn column in dataGridViewTable.Columns)
             {
-                dataGridViewTable.DataSource = clients;
-            }
-            if (selected == "Лыжи")
-            {
-                dataGridViewTable.DataSource = skis;
-            }
-            if (selected == "Аренда")
-            {
-                dataGridViewTable.DataSource = rents;
+                if (column.Name.ToLower() == "id")
+                {
+                    column.ReadOnly = true; // ID нельзя изменять
+                }
             }
         }
 
@@ -88,19 +64,10 @@ namespace ViewWinForms
         {
             if (comboBoxTables.SelectedIndex < 0) return;
             string selected = comboBoxTables.SelectedItem as string;
-            if (selected == "Пользователи")
-            {
-                clients.Add(new Client(0));
-            }
-            if (selected == "Лыжи")
-            {
-                skis.Add(new Skis(0));
-            }
-            if (selected == "Аренда")
-            {
-                rents.Add(new Rent(0));
-            }
-            RedrawTable();
+
+            DataTable table = dataGridViewTable.DataSource as DataTable;
+            DataRow newRow = table.NewRow();
+            table.Rows.Add(newRow);
         }
 
         private void buttonDeleteRow_Click(object sender, EventArgs e)
@@ -110,27 +77,31 @@ namespace ViewWinForms
 
             var cells = dataGridViewTable.SelectedCells;
             if (cells.Count < 1) return;
-            int selectedIndex = cells[0].RowIndex;
-            if (selectedIndex < 0) return;
 
-            if (selected == "Пользователи")
-            {
-                clients.RemoveAt(selectedIndex);
-            }
-            if (selected == "Лыжи")
-            {
-                skis.RemoveAt(selectedIndex);
-            }
-            if (selected == "Аренда")
-            {
-                rents.RemoveAt(selectedIndex);
-            }
-            RedrawTable();
+            DataTable table = dataGridViewTable.DataSource as DataTable;
+
+            int selectedIndex = cells[0].RowIndex;
+            if (selectedIndex < 0 || selectedIndex >= table.Rows.Count) return;
+
+            table.Rows.RemoveAt(selectedIndex);
+
+            //if (selected == "Пользователи")
+            //{
+            //    clients.RemoveAt(selectedIndex);
+            //}
+            //if (selected == "Лыжи")
+            //{
+            //    skis.RemoveAt(selectedIndex);
+            //}
+            //if (selected == "Аренда")
+            //{
+            //    rents.RemoveAt(selectedIndex);
+            //}
+            //RedrawTable();
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            ResetLists();
             RedrawTable();
         }
 
@@ -141,18 +112,18 @@ namespace ViewWinForms
 
             try
             {
-                if (selected == "Пользователи")
-                {
-                    clientRepository.UpdateAll(clients);
-                }
-                if (selected == "Лыжи")
-                {
-                    skisRepository.UpdateAll(skis);
-                }
-                if (selected == "Аренда")
-                {
-                    rentRepository.UpdateAll(rents);
-                }
+                //if (selected == "Пользователи")
+                //{
+                //    clientRepository.UpdateAll(clients);
+                //}
+                //if (selected == "Лыжи")
+                //{
+                //    skisRepository.UpdateAll(skis);
+                //}
+                //if (selected == "Аренда")
+                //{
+                //    rentRepository.UpdateAll(rents);
+                //}
             }
             catch (Exception)
             {
@@ -184,7 +155,7 @@ namespace ViewWinForms
             try
             {
                 databaseManager.BackupDatabase();
-                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Бэкап базы успешно сохранен!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } catch (Exception)
             {
                 MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -196,15 +167,18 @@ namespace ViewWinForms
             if (comboBoxTables.SelectedIndex < 0) return;
             string selected = comboBoxTables.SelectedItem as string;
 
+            DialogResult result = MessageBox.Show($"Вы точно хотите удалить таблицу {selected}?", "Подтвердите действие", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
             try
             {
                 databaseManager.DeleteTable(selected);
-                FillTablesList();
+                RefillTablesList();
                 comboBoxTables.SelectedIndex = 0;
-                MessageBox.Show("Все получилось!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Таблица успешно удалена!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             } catch (Exception)
             {
-                MessageBox.Show("связи сами удаляйте", "Ой", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Что-то пошло не так :(", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

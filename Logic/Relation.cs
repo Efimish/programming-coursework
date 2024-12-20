@@ -8,10 +8,10 @@ namespace Logic
 {
     public class Relation
     {
-        public string FromTable { get; set; }
-        public string FromColumn { get; set; }
-        public string ToTable { get; set; }
-        public string ToColumn { get; set; }
-        public string RelationName { get; set; }
+        public string pkTableName { get; set; }
+        public string pkColumnName { get; set; }
+        public string fkTableName { get; set; }
+        public string fkColumnName { get; set; }
+        public string fkName { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace ViewWinForms
         EmailManager emailManager = new EmailManager();
         SkisRepository skisRepository = new SkisRepository();
         RentRepository rentRepository = new RentRepository();
-        Client client;
+        readonly Client client;
         string filter = null;
         List<Rent> currentRents;
         List<Skis> availableSkis;

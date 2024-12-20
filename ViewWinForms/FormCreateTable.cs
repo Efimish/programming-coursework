@@ -26,6 +26,13 @@ namespace ViewWinForms
 
             SetupTable();
             RedrawTable();
+            comboBoxConnect.Items.Clear();
+            comboBoxConnect.Items.Add("Не связывать");
+            foreach (string table in formEmployee.databaseManager.GetTables().Keys)
+            {
+                comboBoxConnect.Items.Add(table);
+            }
+            comboBoxConnect.SelectedIndex = 0;
         }
 
         private void SetupTable()
@@ -115,8 +122,13 @@ namespace ViewWinForms
                 MessageBox.Show("Ключ должен быть только один!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            formEmployee.databaseManager.CreateTable(tableName, tableColumns);
-            formEmployee.FillTablesList();
+            string connectToTable = null;
+            if (comboBoxConnect.SelectedIndex > 0)
+            {
+                connectToTable = comboBoxConnect.SelectedItem.ToString();
+            }
+            formEmployee.databaseManager.CreateTable(tableName, tableColumns, connectToTable);
+            formEmployee.RefillTablesList();
             MessageBox.Show("Таблица создана!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }

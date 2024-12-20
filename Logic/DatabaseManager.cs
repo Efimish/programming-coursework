@@ -6,6 +6,7 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Logic
 {
@@ -19,6 +20,7 @@ namespace Logic
         }
         public void CreateTable(string name, IEnumerable<TableColumn> columns, string connectToTable = null)
         {
+            // Create a new table
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.AppendLine($"CREATE TABLE [{name}] (");
             queryBuilder.AppendLine(string.Join(",\n", columns));
@@ -27,52 +29,69 @@ namespace Logic
             OleDbCommand command = new OleDbCommand(query, mc);
             command.ExecuteNonQuery();
 
+            // Check if we should connect it to another table
             if (string.IsNullOrEmpty(connectToTable)) return;
 
-            string primaryKey = columns.Where(c => c.Key).First().Name;
+            // Connecting to another table
+            // 1. Find primary key in new table
+            TableColumn primaryColumn = columns.Where(c => c.Key).First();
+            string primaryKey = primaryColumn.Name;
+            TableColumnType primaryColumnType = primaryColumn.Type;
+            string resultType = primaryColumnType == TableColumnType.Int ? "INTEGER" : "TEXT(255)";
+
+            // 2. Create a new column
             string newColumn = $"{name}_ID";
-
-
-            // add a new column
             string addColumnQuery =
                 $"ALTER TABLE[{connectToTable}]\n" +
-                $"ADD COLUMN[{newColumn}] INTEGER;";
+                $"ADD COLUMN[{newColumn}] {resultType};";
             OleDbCommand addColumnCommand = new OleDbCommand(addColumnQuery, mc);
             addColumnCommand.ExecuteNonQuery();
 
 
-            // add a new relation
+            // 3. Create a new relation
             Relation relation = new Relation()
             {
-                FromTable = name,
-                FromColumn = primaryKey,
-                ToTable = connectToTable,
-                ToColumn = newColumn,
-                RelationName = $"{name}{connectToTable}"
+                pkTableName = name,
+                pkColumnName = primaryKey,
+                fkTableName = connectToTable,
+                fkColumnName = newColumn,
+                fkName = $"{name}{connectToTable}"
             };
 
             string relationQuery =
-                $"ALTER TABLE [{relation.ToTable}]\n" +
-                $"ADD CONSTRAINT [{relation.RelationName}]\n" +
-                $"FOREIGN KEY ([{relation.ToColumn}])\n" +
-                $"REFERENCES [{relation.FromTable}] ([{relation.FromColumn}]);";
+                $"ALTER TABLE [{relation.fkTableName}]\n" +
+                $"ADD CONSTRAINT [{relation.fkName}]\n" +
+                $"FOREIGN KEY ([{relation.fkColumnName}])\n" +
+                $"REFERENCES [{relation.pkTableName}] ([{relation.pkColumnName}]);";
             OleDbCommand relationCommand = new OleDbCommand(relationQuery, mc);
             relationCommand.ExecuteNonQuery();
         }
         public void DeleteTable(string name)
         {
             List<Relation> relations = GetRelations()
-                .Where(r => r.FromTable == name || r.ToTable == name)
+                .Where(r => r.pkTableName == name || r.fkTableName == name)
                 .ToList();
             foreach(Relation relation in relations)
             {
-                string relationQuery = $"ALTER TABLE [{relation.ToTable}] DROP CONSTRAINT [{relation.RelationName}]";
-                OleDbCommand relationCommand = new OleDbCommand(relationQuery, mc);
-                relationCommand.ExecuteNonQuery();
+                string dropConstraintQuery = $"ALTER TABLE [{relation.fkTableName}] DROP CONSTRAINT [{relation.fkName}];";
+                OleDbCommand dropConstraintCommand = new OleDbCommand(dropConstraintQuery, mc);
+                dropConstraintCommand.ExecuteNonQuery();
+
+                string dropColumnQuery = $"ALTER TABLE [{relation.fkTableName}] DROP COLUMN [{relation.fkColumnName}];";
+                OleDbCommand dropColumnCommand = new OleDbCommand(dropColumnQuery, mc);
+                dropColumnCommand.ExecuteNonQuery();
             }
             string query = $"DROP TABLE [{name}];";
             OleDbCommand command = new OleDbCommand(query, mc);
             command.ExecuteNonQuery();
+        }
+        public DataTable GetTable(string name)
+        {
+            DataTable table = new DataTable();
+            string query = $"SELECT * FROM [{name}];";
+            OleDbDataAdapter adapter = new OleDbDataAdapter(query, mc);
+            adapter.Fill(table);
+            return table;
         }
         public void BackupDatabase()
         {
@@ -80,10 +99,6 @@ namespace Logic
             string time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             string pathToDatabaseBackup = DBConfig.PathToFolder + $@"\db-backup_{time}.mdb";
             System.IO.File.Copy(pathToDatabase, pathToDatabaseBackup);
-        }
-        public void CreateRelation(string columnFrom, string columnTo)
-        {
-            // create it somehow
         }
 
         public Dictionary<string, List<string>> GetTables()
@@ -162,43 +177,54 @@ namespace Logic
 
         public IEnumerable<Relation> GetRelations()
         {
-            // WIP !!!
-            Dictionary<string, List<string>> tableColumns = GetTables();
-            Dictionary<string, string> primaryKeys = GetPrimaryKeys();
-
             List<Relation> relations = new List<Relation>();
 
-            DataTable schemaIndexes = mc.GetSchema("Indexes");
-            foreach (DataRow row in schemaIndexes.Rows)
+            DataTable foreignKeys = mc.GetOleDbSchemaTable(OleDbSchemaGuid.Foreign_Keys, null);
+            foreach (DataRow row in foreignKeys.Rows)
             {
-                string tableName = row["TABLE_NAME"].ToString();   // Table containing the index
-                string columnName = row["COLUMN_NAME"].ToString(); // Column part of the index
-                string indexName = row["INDEX_NAME"].ToString();   // Index name
-                bool isPrimaryKey = row["PRIMARY_KEY"].ToString() == "True"; // Whether this is part of a primary key
-                bool isUnique = row["UNIQUE"].ToString() == "True"; // Whether this index is unique
-
-                if (!tableColumns.ContainsKey(tableName))
-                    continue;
-
-                if (isUnique)
-                    continue;
-
-                string otherTable = tableColumns.Keys
-                    .Where(t => t != tableName)
-                    .Where(t => indexName.Contains(t)).First();
-                string otherColumn = primaryKeys[otherTable];
+                string fkTableName = row["FK_TABLE_NAME"].ToString(); // Таблица с внешним ключом
+                string fkColumnName = row["FK_COLUMN_NAME"].ToString(); // Имя внешнего столбца
+                string pkTableName = row["PK_TABLE_NAME"].ToString(); // Таблица с первичным ключом
+                string pkColumnName = row["PK_COLUMN_NAME"].ToString(); // Имя первичного столбца
+                string fkName = row["FK_NAME"].ToString(); // Имя внешнего ключа
 
                 relations.Add(new Relation()
                 {
-                    FromTable = otherTable,
-                    FromColumn = columnName,
-                    ToTable = tableName,
-                    ToColumn = columnName,
-                    RelationName = indexName,
-               });
+                    pkTableName = pkTableName,
+                    pkColumnName = pkColumnName,
+                    fkTableName = fkTableName,
+                    fkColumnName = fkColumnName,
+                    fkName = fkName,
+                });
             }
 
             return relations;
+        }
+        public Dictionary<string, int> GetSkisStats()
+        {
+            string query = "SELECT\n" +
+                "[Лыжи].[Модель] AS SkiName,\n" +
+                "COUNT([Аренда].[ID_Лыж]) AS RentCount\n" +
+                "FROM [Лыжи] INNER JOIN [Аренда]\n" +
+                "ON [Лыжи].[ID] = [Аренда].[ID_Лыж]\n" +
+                "GROUP BY [Лыжи].[Модель]\n" +
+                "ORDER BY COUNT([Аренда].[ID_Лыж]) DESC;";
+
+            OleDbCommand command = new OleDbCommand(query, mc);
+
+            Dictionary<string, int> stats = new Dictionary<string, int>();
+
+            using (OleDbDataReader r = command.ExecuteReader())
+            {
+                while (r.Read()) // While we get rows
+                {
+                    string model = r.GetString(r.GetOrdinal("SkiName"));
+                    int count = r.GetInt32(r.GetOrdinal("RentCount"));
+                    stats[model] = count;
+                }
+            }
+
+            return stats;
         }
     }
 }
